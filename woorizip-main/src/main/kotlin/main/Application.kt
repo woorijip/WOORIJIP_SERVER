@@ -3,9 +3,8 @@ package main
 import io.ktor.server.application.Application
 import io.ktor.server.netty.EngineMain
 import main.plugins.configureHTTP
+import main.plugins.configureHandling
 import main.plugins.configureMonitoring
-import main.plugins.configureRouting
-import main.plugins.configureSecurity
 import main.plugins.configureSerialization
 import persistence.config.DatabaseConnector
 import persistence.config.DatabaseConnector.DB_DRIVER
@@ -27,5 +26,5 @@ fun Application.module() {
         put(DB_DRIVER, environment.config.property(DB_DRIVER).getString())
     })
     configureMonitoring()
-    configureRouting()
+    configureHandling()
 }
