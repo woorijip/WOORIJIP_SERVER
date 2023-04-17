@@ -1,17 +1,12 @@
 package main.plugins
 
+import common.exception.BaseErrorCode
 import common.exception.BaseException
-import common.exception.ErrorCode.MEMBER_NOT_FOUND
-import common.exception.ErrorCode.UNHANDLED_EXCEPTION
-import core.member.exception.MemberNotFoundException
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
-import io.ktor.server.routing.get
-import io.ktor.server.routing.routing
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 fun Application.configureHandling() {
@@ -21,9 +16,9 @@ fun Application.configureHandling() {
                 is BaseException -> {
                     call.respond(
                         message = ErrorResponse(
+                            code = cause.code,
                             message = cause.message,
-                            code = cause.errorCode.code,
-//                            details = cause.details() ?: cause.messageArguments() TODO - Any 직렬화
+                            arguments = cause.messageArguments()
                         ),
                         status = cause.getHttpStatusCode()
                     )
@@ -31,35 +26,33 @@ fun Application.configureHandling() {
 
                 else -> {
                     call.respond(
-                        message = "Internal Server Error",
+                        message = ErrorResponse(
+                            code = BaseErrorCode.UNHANDLED_EXCEPTION.code,
+                            message = BaseErrorCode.UNHANDLED_EXCEPTION.message
+                        ),
                         status = HttpStatusCode.InternalServerError
                     )
                 }
             }
         }
     }
-
-    routing {
-        get {
-            throw MemberNotFoundException(1)
-        }
-    }
 }
 
 @Serializable
 data class ErrorResponse(
-    val message: String,
     val code: String,
-    @Contextual
-    val details: Any? = null
+    val message: String,
+    val arguments: Collection<String>? = null
 )
 
 private fun BaseException.getHttpStatusCode(): HttpStatusCode {
-    return when (this.errorCode) {
-        // MEMBER
-        MEMBER_NOT_FOUND -> HttpStatusCode.NotFound
+    return when (this) {
+        is BaseException.BadRequestException -> HttpStatusCode.BadRequest
+        is BaseException.UnauthorizedException -> HttpStatusCode.Unauthorized
+        is BaseException.ForbiddenException -> HttpStatusCode.Forbidden
+        is BaseException.NotFoundException -> HttpStatusCode.NotFound
+        is BaseException.ConflictException -> HttpStatusCode.Conflict
 
-        // UNHANDLED
-        UNHANDLED_EXCEPTION -> HttpStatusCode.InternalServerError
+        else -> HttpStatusCode.InternalServerError
     }
 }

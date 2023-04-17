@@ -16,7 +16,7 @@ object MemberTable : Table("tbl_member") {
     override val primaryKey = PrimaryKey(id)
 }
 
-object InterestCategoryTable: Table("tbl_interest_category") {
+object InterestCategoryTable : Table("tbl_interest_category") {
     val categoryName = varchar("category_name", length = 15)
     val memberId = reference("member_id", MemberTable.id)
 

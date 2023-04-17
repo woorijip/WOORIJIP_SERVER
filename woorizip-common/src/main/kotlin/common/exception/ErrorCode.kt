@@ -1,17 +1,13 @@
 package common.exception
 
-enum class ErrorCode(
-    val code: String
-) {
-    // MEMBER
-    MEMBER_NOT_FOUND("M-001"),
+interface ErrorCode {
+    val sequence: Int
+    val message: String
 
-    // UNHANDLED
-    UNHANDLED_EXCEPTION("-1")
-
-    ;
-
-    companion object {
-        fun from(code: String) = values().firstOrNull { it.code == code } ?: UNHANDLED_EXCEPTION
+    fun getCode(prefix: String): String {
+        val numberCode = "%03d".format(this.sequence)
+        return "$prefix-$numberCode"
     }
+
+    fun option(vararg args: Any): String = String.format(this.message, *args)
 }

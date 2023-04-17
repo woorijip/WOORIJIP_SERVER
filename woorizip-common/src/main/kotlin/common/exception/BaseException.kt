@@ -1,10 +1,33 @@
 package common.exception
 
-open class BaseException(
-    open val errorCode: ErrorCode,
+sealed class BaseException(
+    open val code: String = "",
     override val message: String = "",
-    override val cause: Throwable? = null
-) : RuntimeException(message, cause) {
+) : Throwable() {
     open fun messageArguments(): Collection<String>? = null
-    open fun details(): Any? = null
+
+    open class BadRequestException(
+        override val code: String,
+        override val message: String
+    ) : BaseException(code, message)
+
+    open class UnauthorizedException(
+        override val code: String,
+        override val message: String,
+    ) : BaseException(code, message)
+
+    open class ForbiddenException(
+        override val code: String,
+        override val message: String,
+    ) : BaseException(code, message)
+
+    open class NotFoundException(
+        override val code: String,
+        override val message: String,
+    ) : BaseException(code, message)
+
+    open class ConflictException(
+        override val code: String,
+        override val message: String,
+    ) : BaseException(code, message)
 }
