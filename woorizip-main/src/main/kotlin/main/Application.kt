@@ -2,23 +2,25 @@ package main
 
 import io.ktor.server.application.Application
 import io.ktor.server.netty.EngineMain
-import main.plugins.configureHTTP
-import main.plugins.configureHandling
-import main.plugins.configureMonitoring
-import main.plugins.configureSerialization
 import persistence.config.DatabaseConnector
 import persistence.config.DatabaseConnector.DB_DRIVER
 import persistence.config.DatabaseConnector.DB_PASSWORD
 import persistence.config.DatabaseConnector.DB_URL
 import persistence.config.DatabaseConnector.DB_USER
+import web.config.cors
+import web.config.errorHandling
+import web.config.logging
+import web.config.serialization
 import java.util.Properties
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
-fun Application.module() {
-    configureHTTP()
-//    configureSecurity()
-    configureSerialization()
+fun Application.main() {
+    cors()
+    serialization()
+    logging()
+    errorHandling()
+
     DatabaseConnector(
         Properties().apply {
             put(DB_URL, environment.config.property(DB_URL).getString())
@@ -27,6 +29,4 @@ fun Application.module() {
             put(DB_DRIVER, environment.config.property(DB_DRIVER).getString())
         }
     )
-    configureMonitoring()
-    configureHandling()
 }

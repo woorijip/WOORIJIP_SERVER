@@ -3,6 +3,7 @@ val mysql_version: String = "8.0.32"
 val hikari_version: String = "5.0.1"
 
 dependencies {
+    implementation(projects.woorizipCommon)
     implementation(projects.woorizipCore)
 
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")

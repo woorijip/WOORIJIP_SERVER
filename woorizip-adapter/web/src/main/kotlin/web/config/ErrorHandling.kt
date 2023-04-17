@@ -1,4 +1,4 @@
-package main.plugins
+package web.config
 
 import common.exception.BaseErrorCode
 import common.exception.BaseException
@@ -9,7 +9,7 @@ import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
 import kotlinx.serialization.Serializable
 
-fun Application.configureHandling() {
+fun Application.errorHandling() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
             when (cause) {

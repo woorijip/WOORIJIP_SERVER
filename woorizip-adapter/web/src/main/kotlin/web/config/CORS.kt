@@ -1,4 +1,4 @@
-package main.plugins
+package web.config
 
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
@@ -6,10 +6,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.cors.routing.CORS
 
-fun Application.configureHTTP() {
-//    routing {
-//        swaggerUI(path = "openapi")
-//    }
+fun Application.cors() {
     install(CORS) {
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Get)
