@@ -1,8 +1,11 @@
 package common.exception
 
 interface ErrorCode {
-    fun getCode(prefix: String, ordinal: Int): String {
-        val numberCode = "%03d".format(ordinal)
+    val sequence: Int
+    val message: String
+
+    fun getCode(prefix: String, sequence: Int): String {
+        val numberCode = "%03d".format(sequence)
         return "$prefix-$numberCode"
     }
 

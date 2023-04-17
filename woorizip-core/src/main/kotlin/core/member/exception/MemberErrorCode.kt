@@ -4,16 +4,16 @@ import common.exception.BaseErrorCode
 import common.exception.ErrorCode
 
 enum class MemberErrorCode(
-    val message: String
+    override val sequence: Int,
+    override val message: String
 ) : ErrorCode {
 
-    OUT_OF_LENGTH_LIMIT("Out of length limit"),
-
-    MEMBER_NOT_FOUND("Member is not found")
+    OUT_OF_LENGTH_LIMIT(1, "Out of length limit"),
+    MEMBER_NOT_FOUND(2, "Member is not found")
 
     ;
 
-    val code = getCode(prefix = "MEMBER", ordinal = this.ordinal)
+    val code = getCode(prefix = "MEMBER", sequence = this.sequence)
 
     companion object {
         fun from(code: String) = values().firstOrNull { it.code == code } ?: BaseErrorCode.UNHANDLED_EXCEPTION
