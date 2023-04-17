@@ -1,17 +1,26 @@
 package common.exception
 
-enum class ErrorCode(
-    val code: String
-) {
-    // MEMBER
-    MEMBER_NOT_FOUND("M-001"),
+interface ErrorCode {
+    fun getCode(prefix: String, ordinal: Int): String {
+        return when (val number = ordinal + 1) {
+            in UNITS_MIN..UNITS_MAX -> {
+                "$prefix-00$number"
+            }
 
-    // UNHANDLED
-    UNHANDLED_EXCEPTION("-1")
+            in TENS_MIN..TENS_MAX -> {
+                "$prefix-0$number"
+            }
 
-    ;
+            else -> {
+                "$prefix-$number"
+            }
+        }
+    }
 
-    companion object {
-        fun from(code: String) = values().firstOrNull { it.code == code } ?: UNHANDLED_EXCEPTION
+    private companion object {
+        private const val UNITS_MIN = 1
+        private const val UNITS_MAX = 9
+        private const val TENS_MIN = 10
+        private const val TENS_MAX = 99
     }
 }
