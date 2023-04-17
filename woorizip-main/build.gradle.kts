@@ -12,12 +12,13 @@ application {
 }
 
 dependencies {
+    // modules
     implementation(projects.woorizipAdapter.persistence)
     implementation(projects.woorizipAdapter.web)
     implementation(projects.woorizipCommon)
     implementation(projects.woorizipCore)
 
+    // ktor
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-host-common-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
 }
