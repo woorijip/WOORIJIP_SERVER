@@ -2,14 +2,11 @@ package main.plugins
 
 import common.exception.BaseErrorCode
 import common.exception.BaseException
-import core.member.exception.MemberNotFoundException
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
-import io.ktor.server.routing.get
-import io.ktor.server.routing.routing
 import kotlinx.serialization.Serializable
 
 fun Application.configureHandling() {
@@ -37,11 +34,6 @@ fun Application.configureHandling() {
                     )
                 }
             }
-        }
-    }
-    routing {
-        get {
-            throw MemberNotFoundException(1)
         }
     }
 }

@@ -7,12 +7,13 @@ enum class MemberErrorCode(
     val message: String
 ) : ErrorCode {
 
+    OUT_OF_LENGTH_LIMIT("Out of length limit"),
+
     MEMBER_NOT_FOUND("Member is not found")
 
     ;
 
     val code = getCode(prefix = "MEMBER", ordinal = this.ordinal)
-    override fun getCode(prefix: String, ordinal: Int): String = code
 
     companion object {
         fun from(code: String) = values().firstOrNull { it.code == code } ?: BaseErrorCode.UNHANDLED_EXCEPTION

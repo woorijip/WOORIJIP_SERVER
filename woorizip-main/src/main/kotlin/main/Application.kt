@@ -19,12 +19,14 @@ fun Application.module() {
     configureHTTP()
 //    configureSecurity()
     configureSerialization()
-    DatabaseConnector(Properties().apply {
-        put(DB_URL, environment.config.property(DB_URL).getString())
-        put(DB_USER, environment.config.property(DB_USER).getString())
-        put(DB_PASSWORD, environment.config.property(DB_PASSWORD).getString())
-        put(DB_DRIVER, environment.config.property(DB_DRIVER).getString())
-    })
+    DatabaseConnector(
+        Properties().apply {
+            put(DB_URL, environment.config.property(DB_URL).getString())
+            put(DB_USER, environment.config.property(DB_USER).getString())
+            put(DB_PASSWORD, environment.config.property(DB_PASSWORD).getString())
+            put(DB_DRIVER, environment.config.property(DB_DRIVER).getString())
+        }
+    )
     configureMonitoring()
     configureHandling()
 }
