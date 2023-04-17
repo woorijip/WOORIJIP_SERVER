@@ -9,7 +9,7 @@ enum class BaseErrorCode(
 
     ;
 
-    val code = getCode(prefix = "ERROR", sequence = this.sequence)
+    val code = getCode(prefix = "ERROR")
 
     companion object {
         fun from(code: String) = values().firstOrNull { it.code == code } ?: UNHANDLED_EXCEPTION

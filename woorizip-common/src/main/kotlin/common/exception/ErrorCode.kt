@@ -4,10 +4,10 @@ interface ErrorCode {
     val sequence: Int
     val message: String
 
-    fun getCode(prefix: String, sequence: Int): String {
-        val numberCode = "%03d".format(sequence)
+    fun getCode(prefix: String): String {
+        val numberCode = "%03d".format(this.sequence)
         return "$prefix-$numberCode"
     }
 
-    fun option(message: String, vararg args: Any): String = String.format(message, *args)
+    fun option(vararg args: Any): String = String.format(this.message, *args)
 }

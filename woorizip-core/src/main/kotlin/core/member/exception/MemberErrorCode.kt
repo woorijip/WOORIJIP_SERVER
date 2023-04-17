@@ -13,7 +13,7 @@ enum class MemberErrorCode(
 
     ;
 
-    val code = getCode(prefix = "MEMBER", sequence = this.sequence)
+    val code = getCode(prefix = "MEMBER")
 
     companion object {
         fun from(code: String) = values().firstOrNull { it.code == code } ?: BaseErrorCode.UNHANDLED_EXCEPTION
