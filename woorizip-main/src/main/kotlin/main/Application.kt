@@ -16,6 +16,8 @@ import java.util.Properties
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.main() {
+    binding()
+    routing()
     cors()
     serialization()
     logging()
