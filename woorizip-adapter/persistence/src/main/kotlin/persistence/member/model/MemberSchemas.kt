@@ -1,7 +1,10 @@
 package persistence.member.model
 
 import core.member.model.Email
+import core.member.model.InterestCategory
 import core.member.model.Member
+import core.member.model.Password
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 
 object MemberTable : Table("tbl_member") {
@@ -16,9 +19,24 @@ object MemberTable : Table("tbl_member") {
     override val primaryKey = PrimaryKey(id)
 }
 
+fun MemberTable.toDomain(row: ResultRow) = Member(
+    id = row[this.id],
+    name = row[this.name],
+    email = Email(row[this.email]),
+    password = Password(row[this.password]),
+    phoneNumber = row[this.phoneNumber],
+    age = row[this.age],
+    selfIntroduce = row[this.selfIntroduce]
+)
+
 object InterestCategoryTable : Table("tbl_interest_category") {
     val categoryName = varchar("category_name", length = 15)
     val memberId = reference("member_id", MemberTable.id)
 
     override val primaryKey = PrimaryKey(categoryName, memberId)
 }
+
+fun InterestCategoryTable.toDomain(row: ResultRow) = InterestCategory(
+    categoryName = row[this.categoryName],
+    memberId = row[this.memberId]
+)
