@@ -22,4 +22,14 @@ data class MemberOutput(
         selfIntroduce = member.selfIntroduce,
         interestCategories = member.interestCategories?.map { it.categoryName }
     )
+
+    constructor(member: Member, interestCategories: List<String>) : this(
+        id = member.id,
+        name = member.name,
+        email = member.email.value,
+        phoneNumber = member.phoneNumber,
+        age = member.age,
+        selfIntroduce = member.selfIntroduce,
+        interestCategories = interestCategories
+    )
 }

@@ -9,7 +9,8 @@ enum class MemberErrorCode(
 ) : ErrorCode {
 
     OUT_OF_LENGTH_LIMIT(1, "Out of length limit"),
-    MEMBER_NOT_FOUND(2, "Member is not found")
+    MEMBER_NOT_FOUND(2, "Member is not found"),
+    ALREADY_EXISTS(3, "Member Already Exists")
 
     ;
 

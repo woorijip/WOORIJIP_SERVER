@@ -19,15 +19,20 @@ object MemberTable : Table("tbl_member") {
     override val primaryKey = PrimaryKey(id)
 }
 
-fun MemberTable.toDomain(row: ResultRow) = Member(
-    id = row[this.id],
-    name = row[this.name],
-    email = Email(row[this.email]),
-    password = Password(row[this.password]),
-    phoneNumber = row[this.phoneNumber],
-    age = row[this.age],
-    selfIntroduce = row[this.selfIntroduce]
-)
+internal fun MemberTable.toDomain(row: ResultRow?): Member? {
+    return row?.let {
+        Member(
+            id = row[this.id],
+            name = row[this.name],
+            email = Email(row[this.email]),
+            password = Password(row[this.password]),
+            phoneNumber = row[this.phoneNumber],
+            age = row[this.age],
+            selfIntroduce = row[this.selfIntroduce],
+            interestCategories = emptyList()
+        )
+    }
+}
 
 object InterestCategoryTable : Table("tbl_interest_category") {
     val categoryName = varchar("category_name", length = 15)
@@ -36,7 +41,11 @@ object InterestCategoryTable : Table("tbl_interest_category") {
     override val primaryKey = PrimaryKey(categoryName, memberId)
 }
 
-fun InterestCategoryTable.toDomain(row: ResultRow) = InterestCategory(
-    categoryName = row[this.categoryName],
-    memberId = row[this.memberId]
-)
+internal fun InterestCategoryTable.toDomain(row: ResultRow?): InterestCategory? {
+    return row?.let {
+        InterestCategory(
+            categoryName = row[this.categoryName],
+            memberId = row[this.memberId]
+        )
+    }
+}
