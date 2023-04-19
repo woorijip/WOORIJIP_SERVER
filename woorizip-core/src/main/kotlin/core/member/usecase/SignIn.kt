@@ -4,13 +4,14 @@ import core.member.model.Email
 import core.member.model.Password
 import core.member.service.MemberService
 import core.member.usecase.result.TokenOutput
+import core.outport.TokenPort
 import core.outport.TransactionPort
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
 
 class SignIn(
     private val memberService: MemberService,
-    private val txPort: TransactionPort
+    private val txPort: TransactionPort,
+    private val tokenPort: TokenPort
 ) {
 
     suspend operator fun invoke(input: Input): TokenOutput {
@@ -18,9 +19,7 @@ class SignIn(
             val member = memberService.getMemberByEmail(input.email)
             memberService.signIn(member, input.password)
 
-            // 토큰 발급
-
-            return@withNewTransaction TokenOutput("", LocalDateTime.now())
+            return@withNewTransaction tokenPort.generateToken(member.id)
         }
     }
 

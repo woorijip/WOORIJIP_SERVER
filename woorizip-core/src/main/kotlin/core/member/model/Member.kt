@@ -45,9 +45,9 @@ data class Member(
     }
 
     companion object {
-        private const val NAME_MAX_LENGTH = 5
-        private const val PHONE_NUMBER_MAX_LENGTH = 11
-        private const val SELF_INTRODUCE_MAX_LENGTH = 200
+        const val NAME_MAX_LENGTH = 5
+        const val PHONE_NUMBER_MAX_LENGTH = 11
+        const val SELF_INTRODUCE_MAX_LENGTH = 200
     }
 }
 
@@ -67,7 +67,7 @@ data class InterestCategory(
     }
 
     companion object {
-        private const val CATEGORY_NAME_MAX_LENGTH = 15
+        const val CATEGORY_NAME_MAX_LENGTH = 15
     }
 }
 
@@ -86,7 +86,7 @@ value class Email(
     }
 
     companion object {
-        private const val EMAIL_MAX_LENGTH = 255
+        const val EMAIL_MAX_LENGTH = 255
     }
 }
 
@@ -97,8 +97,8 @@ value class Password(
 ) {
     init {
         if (
-            (value.length > PASSWORD_MAX_LENGTH || value.length < PASSWORD_MIN_LENGTH)
-            && value.length != ENCODED_PASSWORD_LENGTH
+            (value.length > PASSWORD_MAX_LENGTH || value.length < PASSWORD_MIN_LENGTH) &&
+            value.length != ENCODED_PASSWORD_LENGTH
         ) {
             throw OutOfLengthLimitException(
                 lengths = value.length,
@@ -117,10 +117,9 @@ value class Password(
         )
     }
 
-
     companion object {
         private const val PASSWORD_MIN_LENGTH = 8
         private const val PASSWORD_MAX_LENGTH = 32
-        private const val ENCODED_PASSWORD_LENGTH = 60
+        const val ENCODED_PASSWORD_LENGTH = 60
     }
 }

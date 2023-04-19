@@ -7,6 +7,7 @@ import org.koin.core.context.stopKoin
 import org.koin.core.logger.Level
 import org.koin.logger.slf4jLogger
 import persistence.persistenceModule
+import security.securityModule
 import web.webModule
 
 fun Application.binding() {
@@ -14,7 +15,10 @@ fun Application.binding() {
     startKoin {
         slf4jLogger(level = Level.INFO)
         modules(
-            coreModule, persistenceModule, webModule
+            coreModule,
+            persistenceModule,
+            webModule,
+            securityModule
         )
     }
 }

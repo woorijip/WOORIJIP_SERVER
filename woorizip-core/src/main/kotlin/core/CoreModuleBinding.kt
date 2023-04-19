@@ -7,6 +7,7 @@ import core.member.service.CommandMemberServiceImpl
 import core.member.service.MemberService
 import core.member.service.QueryMemberService
 import core.member.service.QueryMemberServiceImpl
+import core.member.usecase.SignIn
 import core.member.usecase.SignUp
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -29,4 +30,5 @@ internal val serviceModule = module {
 internal val useCaseModule = module {
     // member
     singleOf(::SignUp)
+    singleOf(::SignIn)
 }

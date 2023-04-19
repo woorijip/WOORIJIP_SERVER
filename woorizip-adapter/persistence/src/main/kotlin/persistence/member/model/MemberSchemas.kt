@@ -11,7 +11,7 @@ object MemberTable : Table("tbl_member") {
     val id = integer("id").autoIncrement()
     val name = varchar("name", length = Member.NAME_MAX_LENGTH)
     val email = varchar("email", length = Email.EMAIL_MAX_LENGTH).uniqueIndex("UK_Member_Email")
-    val password = char("password", length = 60)
+    val password = char("password", length = Password.ENCODED_PASSWORD_LENGTH)
     val phoneNumber = varchar("phone", length = Member.PHONE_NUMBER_MAX_LENGTH).uniqueIndex("UK_Member_Phone")
     val age = integer("age")
     val selfIntroduce = varchar("self_introduce", length = Member.SELF_INTRODUCE_MAX_LENGTH).nullable()
@@ -35,7 +35,7 @@ internal fun MemberTable.toDomain(row: ResultRow?): Member? {
 }
 
 object InterestCategoryTable : Table("tbl_interest_category") {
-    val categoryName = varchar("category_name", length = 15)
+    val categoryName = varchar("category_name", length = InterestCategory.CATEGORY_NAME_MAX_LENGTH)
     val memberId = reference("member_id", MemberTable.id)
 
     override val primaryKey = PrimaryKey(categoryName, memberId)

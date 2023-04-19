@@ -15,6 +15,7 @@ dependencies {
     // modules
     implementation(projects.woorizipAdapter.persistence)
     implementation(projects.woorizipAdapter.web)
+    implementation(projects.woorizipAdapter.security)
     implementation(projects.woorizipCommon)
     implementation(projects.woorizipCore)
 

@@ -22,10 +22,6 @@ dependencies {
     // exception handling
     implementation("io.ktor:ktor-server-status-pages-jvm:$ktor_version")
 
-    // auth
-    implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
-
     // logging
     implementation("io.ktor:ktor-server-call-logging-jvm:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
