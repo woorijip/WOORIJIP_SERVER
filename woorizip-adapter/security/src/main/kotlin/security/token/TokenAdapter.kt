@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 import java.util.Date
 
 class TokenAdapter : TokenPort {
-    override suspend fun generateToken(memberId: Int): TokenOutput {
-        val accessToken = generateAccessToken(memberId)
+    override suspend fun issueToken(memberId: Int): TokenOutput {
+        val accessToken = issueAccessToken(memberId)
         val accessTokenExpiredAt = LocalDateTime.now().plusNanos(SecurityProperties.accessExpired)
 
         return TokenOutput(
@@ -19,10 +19,9 @@ class TokenAdapter : TokenPort {
         )
     }
 
-    private fun generateAccessToken(memberId: Int): String {
+    private fun issueAccessToken(memberId: Int): String {
         return JWT.create()
-            .withSubject(JWT_SUBJECT)
-            .withJWTId(JWT_ID_ACCESS)
+            .withHeader(mapOf("JWT" to "access"))
             .withAudience(SecurityProperties.audience)
             .withIssuer(SecurityProperties.issuer)
             .withClaim(JWT_MEMBER_ID, memberId.toString())
@@ -31,8 +30,6 @@ class TokenAdapter : TokenPort {
     }
 
     companion object {
-        const val JWT_SUBJECT: String = "Authentication"
-        const val JWT_ID_ACCESS: String = "Access"
-        const val JWT_MEMBER_ID: String = "MemberId"
+        const val JWT_MEMBER_ID: String = "MID"
     }
 }

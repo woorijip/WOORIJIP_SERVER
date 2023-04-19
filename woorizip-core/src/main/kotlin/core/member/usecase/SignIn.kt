@@ -19,7 +19,7 @@ class SignIn(
             val member = memberService.getMemberByEmail(input.email)
             memberService.signIn(member, input.password)
 
-            return@withNewTransaction tokenPort.generateToken(member.id)
+            return@withNewTransaction tokenPort.issueToken(member.id)
         }
     }
 

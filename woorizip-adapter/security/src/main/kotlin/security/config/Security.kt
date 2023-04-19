@@ -11,6 +11,7 @@ import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.response.respond
+import security.token.TokenAdapter.Companion.JWT_MEMBER_ID
 import kotlin.properties.Delegates
 
 fun Application.security() {
@@ -27,19 +28,18 @@ fun Application.security() {
             )
 
             validate { credential ->
-                if (credential.payload.audience.contains(SecurityProperties.audience)) {
+                if (credential.payload.getClaim(JWT_MEMBER_ID).asString() != "") {
                     JWTPrincipal(credential.payload)
                 } else {
                     null
                 }
             }
 
-            challenge { _, realm ->
+            challenge { _, _ ->
                 call.respond(
                     message = ErrorResponse(
                         code = BaseErrorCode.UNHANDLED_EXCEPTION.code,
-                        message = BaseErrorCode.UNHANDLED_EXCEPTION.message,
-                        arguments = listOf(realm)
+                        message = BaseErrorCode.UNHANDLED_EXCEPTION.message
                     ),
                     status = HttpStatusCode.InternalServerError
                 )
@@ -53,7 +53,6 @@ object SecurityProperties {
 
     lateinit var audience: String
     lateinit var secret: String
-    lateinit var realm: String
     lateinit var issuer: String
     var accessExpired: Long by Delegates.notNull()
         private set
@@ -62,7 +61,6 @@ object SecurityProperties {
         val prefix = "jwt"
         audience = config.property("$prefix.audience").getString()
         secret = config.property("$prefix.secret").getString()
-        realm = config.property("$prefix.realm").getString()
         issuer = config.property("$prefix.issuer").getString()
         accessExpired = config.property("$prefix.expired.access-token").getString().toLong() * millisecondPerSecond
     }
