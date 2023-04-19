@@ -6,26 +6,32 @@ import core.member.model.Member
 import core.member.model.Password
 import core.member.service.MemberService
 import core.member.usecase.result.MemberOutput
+import core.outport.TransactionPort
 import kotlinx.serialization.Serializable
 
-class SignUp(private val memberService: MemberService) {
+class SignUp(
+    private val memberService: MemberService,
+    private val txPort: TransactionPort
+) {
 
     suspend operator fun invoke(input: Input): MemberOutput {
-        memberService.checkNotExistsEmail(input.email)
-        memberService.checkNotExistsPhoneNumber(input.phoneNumber)
+        return txPort.withNewTransaction {
+            memberService.checkNotExistsEmail(input.email)
+            memberService.checkNotExistsPhoneNumber(input.phoneNumber)
 
-        val savedMember = memberService.saveMember(
-            input.toDomain()
-        )
+            val savedMember = memberService.saveMember(
+                input.toDomain()
+            )
 
-        input.interestCategories?.let {
-            val interestCategories = input.interestCategories.map { InterestCategory(it, savedMember.id) }
-            memberService.saveInterestCategories(savedMember.id, interestCategories)
+            input.interestCategories?.let {
+                val interestCategories = input.interestCategories.map { InterestCategory(it, savedMember.id) }
+                memberService.saveInterestCategories(savedMember.id, interestCategories)
 
-            return MemberOutput(savedMember, input.interestCategories)
+                return@withNewTransaction MemberOutput(savedMember, input.interestCategories)
+            }
+
+            return@withNewTransaction MemberOutput(savedMember)
         }
-
-        return MemberOutput(savedMember)
     }
 
     @Serializable
