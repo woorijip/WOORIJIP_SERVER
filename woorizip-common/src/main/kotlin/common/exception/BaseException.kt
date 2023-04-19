@@ -30,4 +30,9 @@ sealed class BaseException(
         override val code: String,
         override val message: String,
     ) : BaseException(code, message)
+
+    open class UnhandledException(
+        override val code: String = BaseErrorCode.UNHANDLED_EXCEPTION.code,
+        override val message: String,
+    ) : BaseException(code, message)
 }

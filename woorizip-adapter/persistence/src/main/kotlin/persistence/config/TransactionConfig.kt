@@ -1,6 +1,7 @@
 package persistence.config
 
 import com.zaxxer.hikari.util.IsolationLevel
+import common.exception.BaseException
 import core.annotation.RequiresTransactionContext
 import core.outport.TransactionPort
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transactionManager
 import persistence.config.DatabaseConnector.database
+import persistence.exception.throwAsDomainException
 
 class TransactionConfig : TransactionPort {
     override suspend fun <T> withNewTransaction(
@@ -19,7 +21,7 @@ class TransactionConfig : TransactionPort {
         block: suspend () -> T
     ): T {
         return try {
-            if (readOnly) {
+            if (!readOnly) {
                 newSuspendedTransaction(db = database, context = Dispatchers.IO) {
                     addLogger(StdOutSqlLogger)
                     block()
@@ -34,7 +36,7 @@ class TransactionConfig : TransactionPort {
                 }
             }
         } catch (e: ExposedSQLException) {
-            TODO()
+            e.throwAsDomainException()
         }
     }
 
@@ -45,9 +47,13 @@ class TransactionConfig : TransactionPort {
         val tx = database.transactionManager.currentOrNull()
 
         if (tx == null) {
-            throw IllegalStateException("withExistingTransaction(): no current transaction in context")
+            throw BaseException.UnhandledException(
+                message = "withExistingTransaction(): no current transaction in context"
+            )
         } else if (tx.connection.isClosed) {
-            throw IllegalStateException("withExistingTransaction(): current transaction is closed")
+            throw BaseException.UnhandledException(
+                message = "withExistingTransaction(): current transaction is closed"
+            )
         }
 
         return try {
@@ -56,7 +62,7 @@ class TransactionConfig : TransactionPort {
                 block()
             }
         } catch (e: ExposedSQLException) {
-            TODO()
+            e.throwAsDomainException()
         }
     }
 
@@ -74,7 +80,7 @@ class TransactionConfig : TransactionPort {
                 withExistingTransaction(block)
             }
         } catch (e: ExposedSQLException) {
-            TODO()
+            e.throwAsDomainException()
         }
     }
 }
