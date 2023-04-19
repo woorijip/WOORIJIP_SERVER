@@ -1,7 +1,6 @@
 package core.member.usecase
 
 import core.member.model.Email
-import core.member.model.InterestCategory
 import core.member.model.Member
 import core.member.model.Password
 import core.member.service.MemberService
@@ -23,11 +22,10 @@ class SignUp(
                 input.toDomain()
             )
 
-            input.interestCategories?.let {
-                val interestCategories = input.interestCategories.map { InterestCategory(it, savedMember.id) }
-                memberService.saveInterestCategories(savedMember.id, interestCategories)
+            input.interestCategoryNames?.let {
+                memberService.saveInterestCategories(savedMember.id, it)
 
-                return@withNewTransaction MemberOutput(savedMember, input.interestCategories)
+                return@withNewTransaction MemberOutput(savedMember, it)
             }
 
             return@withNewTransaction MemberOutput(savedMember)
@@ -42,7 +40,7 @@ class SignUp(
         val age: Int,
         val password: Password,
         val selfIntroduce: String? = null,
-        val interestCategories: List<String>? = null
+        val interestCategoryNames: List<String>? = null
     ) {
         fun toDomain(): Member {
             return Member(

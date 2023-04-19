@@ -11,7 +11,7 @@ data class MemberOutput(
     val phoneNumber: String,
     val age: Int,
     val selfIntroduce: String?,
-    val interestCategories: List<String>?
+    val interestCategoryNames: List<String>?
 ) {
     constructor(member: Member) : this(
         id = member.id,
@@ -20,16 +20,16 @@ data class MemberOutput(
         phoneNumber = member.phoneNumber,
         age = member.age,
         selfIntroduce = member.selfIntroduce,
-        interestCategories = member.interestCategories?.map { it.categoryName }
+        interestCategoryNames = member.interestCategories?.map { it.categoryName }
     )
 
-    constructor(member: Member, interestCategories: List<String>) : this(
+    constructor(member: Member, interestCategoryNames: List<String>) : this(
         id = member.id,
         name = member.name,
         email = member.email.value,
         phoneNumber = member.phoneNumber,
         age = member.age,
         selfIntroduce = member.selfIntroduce,
-        interestCategories = interestCategories
+        interestCategoryNames = interestCategoryNames
     )
 }
