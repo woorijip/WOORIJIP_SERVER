@@ -10,7 +10,8 @@ enum class MemberErrorCode(
 
     OUT_OF_LENGTH_LIMIT(1, "Out of length limit"),
     MEMBER_NOT_FOUND(2, "Member is not found"),
-    ALREADY_EXISTS(3, "Member Already Exists")
+    ALREADY_EXISTS(3, "Member Already Exists"),
+    PASSWORD_MISMATCH(4, "Password is not matched")
 
     ;
 

@@ -19,6 +19,10 @@ class MemberPersistenceAdapter(
         return memberRepository.existsBy { MemberTable.phoneNumber eq phoneNumber }
     }
 
+    override suspend fun getMemberByEmail(email: String): Member? {
+        return memberRepository.findBy { MemberTable.email eq email }
+    }
+
     override suspend fun saveMember(member: Member): Member {
         return memberRepository.saveMember(member)
     }

@@ -5,4 +5,7 @@ plugins {
 dependencies {
     // modules
     implementation(projects.woorizipCommon)
+
+    // bcrypt
+    implementation("org.mindrot:jbcrypt:0.4")
 }
