@@ -13,6 +13,8 @@ import persistence.member.model.MemberTable
 import java.util.Properties
 
 object DatabaseConnector {
+    lateinit var database: Database
+
     private const val DB_PREFIX = "database"
     const val DB_URL = "$DB_PREFIX.url"
     const val DB_USER = "$DB_PREFIX.user"
@@ -20,7 +22,7 @@ object DatabaseConnector {
     const val DB_DRIVER = "$DB_PREFIX.driver"
 
     operator fun invoke(properties: Properties) {
-        val database = Database.connect(
+        database = Database.connect(
             HikariDataSource(
                 HikariConfig().apply {
                     jdbcUrl = properties.getProperty(DB_URL)

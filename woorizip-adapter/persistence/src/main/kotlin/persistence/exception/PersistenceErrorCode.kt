@@ -1,20 +1,18 @@
-package core.member.exception
+package persistence.exception
 
 import common.exception.BaseErrorCode
 import common.exception.ErrorCode
 
-enum class MemberErrorCode(
+enum class PersistenceErrorCode(
     override val sequence: Int,
     override val message: String
 ) : ErrorCode {
 
-    OUT_OF_LENGTH_LIMIT(1, "Out of length limit"),
-    MEMBER_NOT_FOUND(2, "Member is not found"),
-    ALREADY_EXISTS(3, "Member Already Exists")
+    DUPLICATE_KEY_VALUE(1, "Duplicate key value violates unique constraint")
 
     ;
 
-    val code = getCode(prefix = "MEMBER")
+    val code = getCode(prefix = "PERSISTENCE")
 
     companion object {
         fun from(code: String) = values().firstOrNull { it.code == code } ?: BaseErrorCode.UNHANDLED_EXCEPTION

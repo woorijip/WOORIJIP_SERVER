@@ -3,16 +3,19 @@ package core.member.model
 import core.annotation.AggregateRoot
 import core.annotation.SubDomain
 import core.member.exception.OutOfLengthLimitException
+import kotlinx.serialization.Serializable
 
+@Serializable
 @AggregateRoot
 data class Member(
-    val id: Int,
+    val id: Int = 0,
     val name: String,
     val email: Email,
     val password: Password,
     val phoneNumber: String,
     val age: Int,
-    val selfIntroduce: String?
+    val selfIntroduce: String?,
+    val interestCategories: List<InterestCategory>? = null
 ) {
     init {
         if (name.length > NAME_MAX_LENGTH) {
@@ -40,6 +43,7 @@ data class Member(
     }
 }
 
+@Serializable
 @SubDomain
 data class InterestCategory(
     val categoryName: String,
@@ -59,9 +63,10 @@ data class InterestCategory(
     }
 }
 
+@Serializable
 @JvmInline
 value class Email(
-    private val value: String
+    val value: String
 ) {
     init {
         if (value.length > EMAIL_MAX_LENGTH) {
@@ -77,9 +82,10 @@ value class Email(
     }
 }
 
+@Serializable
 @JvmInline
 value class Password(
-    private val value: String
+    val value: String
 ) {
     init {
         if (value.length > PASSWORD_MAX_LENGTH || value.length < PASSWORD_MIN_LENGTH) {
