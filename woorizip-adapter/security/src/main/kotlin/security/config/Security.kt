@@ -49,8 +49,6 @@ fun Application.security() {
 }
 
 object SecurityProperties {
-    private const val millisecondPerSecond: Long = 1000
-
     lateinit var audience: String
     lateinit var secret: String
     lateinit var issuer: String
@@ -62,6 +60,6 @@ object SecurityProperties {
         audience = config.property("$prefix.audience").getString()
         secret = config.property("$prefix.secret").getString()
         issuer = config.property("$prefix.issuer").getString()
-        accessExpired = config.property("$prefix.expired.access-token").getString().toLong() * millisecondPerSecond
+        accessExpired = config.property("$prefix.expired.access-token").getString().toLong()
     }
 }

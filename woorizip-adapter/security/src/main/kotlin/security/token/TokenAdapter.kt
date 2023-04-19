@@ -11,7 +11,7 @@ import java.util.Date
 class TokenAdapter : TokenPort {
     override suspend fun issueToken(memberId: Int): TokenOutput {
         val accessToken = issueAccessToken(memberId)
-        val accessTokenExpiredAt = LocalDateTime.now().plusNanos(SecurityProperties.accessExpired)
+        val accessTokenExpiredAt = LocalDateTime.now().plusSeconds(SecurityProperties.accessExpired)
 
         return TokenOutput(
             accessToken = accessToken,
@@ -25,11 +25,12 @@ class TokenAdapter : TokenPort {
             .withAudience(SecurityProperties.audience)
             .withIssuer(SecurityProperties.issuer)
             .withClaim(JWT_MEMBER_ID, memberId.toString())
-            .withExpiresAt(Date(System.currentTimeMillis() + SecurityProperties.accessExpired))
+            .withExpiresAt(Date(System.currentTimeMillis() + SecurityProperties.accessExpired * millisecondPerSecond))
             .sign(Algorithm.HMAC256(SecurityProperties.secret))
     }
 
     companion object {
+        const val millisecondPerSecond: Long = 1000
         const val JWT_MEMBER_ID: String = "MID"
     }
 }
