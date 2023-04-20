@@ -1,6 +1,6 @@
 package persistence.exception
 
-import common.exception.BaseErrorCode
+import common.exception.BaseException
 import common.exception.ErrorCode
 
 enum class PersistenceErrorCode(
@@ -15,6 +15,7 @@ enum class PersistenceErrorCode(
     val code = getCode(prefix = "PERSISTENCE")
 
     companion object {
-        fun from(code: String) = values().firstOrNull { it.code == code } ?: BaseErrorCode.UNHANDLED_EXCEPTION
+        fun from(code: String) = values().firstOrNull { it.code == code }
+            ?: throw BaseException.UnhandledException(message = "해당 에러 코드는 존재하지 않습니다.")
     }
 }

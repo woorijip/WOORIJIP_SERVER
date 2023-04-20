@@ -1,5 +1,6 @@
 package persistence.member.model
 
+import core.member.model.Category
 import core.member.model.Email
 import core.member.model.InterestCategory
 import core.member.model.Member
@@ -44,7 +45,7 @@ object InterestCategoryTable : Table("tbl_interest_category") {
 internal fun InterestCategoryTable.toDomain(row: ResultRow?): InterestCategory? {
     return row?.let {
         InterestCategory(
-            categoryName = row[this.categoryName],
+            category = Category.from(row[this.categoryName]),
             memberId = row[this.memberId]
         )
     }

@@ -1,5 +1,6 @@
 package core.member.usecase.result
 
+import core.member.model.Category
 import core.member.model.Member
 import kotlinx.serialization.Serializable
 
@@ -11,7 +12,7 @@ data class MemberOutput(
     val phoneNumber: String,
     val age: Int,
     val selfIntroduce: String?,
-    val interestCategoryNames: List<String>?
+    val interestCategoryNames: List<Category>?
 ) {
     constructor(member: Member) : this(
         id = member.id,
@@ -20,10 +21,10 @@ data class MemberOutput(
         phoneNumber = member.phoneNumber,
         age = member.age,
         selfIntroduce = member.selfIntroduce,
-        interestCategoryNames = member.interestCategories?.map { it.categoryName }
+        interestCategoryNames = member.interestCategories?.map { it.category }
     )
 
-    constructor(member: Member, interestCategoryNames: List<String>) : this(
+    constructor(member: Member, interestCategoryNames: List<Category>) : this(
         id = member.id,
         name = member.name,
         email = member.email.value,

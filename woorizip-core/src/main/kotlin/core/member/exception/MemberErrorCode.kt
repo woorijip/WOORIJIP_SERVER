@@ -1,6 +1,6 @@
 package core.member.exception
 
-import common.exception.BaseErrorCode
+import common.exception.BaseException
 import common.exception.ErrorCode
 
 enum class MemberErrorCode(
@@ -18,6 +18,7 @@ enum class MemberErrorCode(
     val code = getCode(prefix = "MEMBER")
 
     companion object {
-        fun from(code: String) = values().firstOrNull { it.code == code } ?: BaseErrorCode.UNHANDLED_EXCEPTION
+        fun from(code: String) = values().firstOrNull { it.code == code }
+            ?: throw BaseException.UnhandledException(message = "해당 에러 코드는 존재하지 않습니다.")
     }
 }
