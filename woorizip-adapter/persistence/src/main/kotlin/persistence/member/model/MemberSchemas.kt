@@ -1,6 +1,6 @@
 package persistence.member.model
 
-import core.member.model.Category
+import core.meeting.model.Category
 import core.member.model.Email
 import core.member.model.InterestCategory
 import core.member.model.Member

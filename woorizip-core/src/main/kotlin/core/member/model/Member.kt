@@ -1,9 +1,8 @@
 package core.member.model
 
-import common.exception.BaseErrorCode
-import common.exception.BaseException
 import core.annotation.AggregateRoot
 import core.annotation.SubDomain
+import core.meeting.model.Category
 import core.member.exception.OutOfLengthLimitException
 import core.member.exception.PasswordMisMatchException
 import kotlinx.serialization.Serializable
@@ -60,9 +59,9 @@ data class InterestCategory(
     val memberId: Int
 ) {
     init {
-        if (category.categoryName.length > CATEGORY_NAME_MAX_LENGTH) {
+        if (category.value.length > CATEGORY_NAME_MAX_LENGTH) {
             throw OutOfLengthLimitException(
-                lengths = category.categoryName.length,
+                lengths = category.value.length,
                 message = "관심 카테고리는 $CATEGORY_NAME_MAX_LENGTH 글자 이하로 이루어져야 합니다."
             )
         }
@@ -70,40 +69,6 @@ data class InterestCategory(
 
     companion object {
         const val CATEGORY_NAME_MAX_LENGTH = 20
-    }
-}
-
-enum class Category(val categoryName: String) {
-    HUMAN_RELATIONSHIP("인간관계(친목)"),
-    ALCOHOL("술"),
-    SELF_IMPROVEMENT("자기계발/공부"),
-    ART("예술"),
-    SPORTS("스포츠/운동"),
-    FOOD("음식"),
-    LIFE("라이프"),
-    CRAFT("공예/만들기"),
-    BOOK("책/글쓰기/독서"),
-    TEE("차/음료"),
-    CAREER("커리어/직장"),
-    REINVESTMENT("재테크"),
-    PET("반려동물"),
-    GAME("게임/액티비티"),
-    TRAVEL("여행"),
-    PSYCHOLOGY("심리/상담"),
-    INTERIOR("인테리어/가구"),
-    HEALTH("건강"),
-    ENVIRONMENT("환경"),
-    BEAUTY("미용"),
-    TREND("트렌드"),
-    LOVE("연애/이성관계"),
-    PLANT("식물/자연")
-    ;
-
-    companion object {
-        fun from(name: String): Category {
-            return values().firstOrNull { it.categoryName == name }
-                ?: throw BaseException.UnhandledException(message = "해당 카테고리는 존재하지 않습니다.")
-        }
     }
 }
 

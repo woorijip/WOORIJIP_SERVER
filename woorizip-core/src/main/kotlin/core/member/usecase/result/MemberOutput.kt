@@ -1,6 +1,6 @@
 package core.member.usecase.result
 
-import core.member.model.Category
+import core.meeting.model.Category
 import core.member.model.Member
 import kotlinx.serialization.Serializable
 
