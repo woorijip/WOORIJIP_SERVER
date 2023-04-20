@@ -1,21 +1,26 @@
-package security.config
+package web.security.config
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import common.exception.BaseErrorCode
 import common.exception.ErrorResponse
+import core.context.MemberContextService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
+import io.ktor.server.application.install
 import io.ktor.server.auth.authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.response.respond
-import security.token.TokenAdapter.Companion.JWT_MEMBER_ID
+import web.security.filter.ResponseInterceptor
+import web.security.token.Claims
 import kotlin.properties.Delegates
 
 fun Application.security() {
     SecurityProperties(environment.config)
+
+    install(ResponseInterceptor)
 
     authentication {
         jwt {
@@ -28,7 +33,10 @@ fun Application.security() {
             )
 
             validate { credential ->
-                if (credential.payload.getClaim(JWT_MEMBER_ID).asString() != "") {
+                val memberId = credential.payload.getClaim(Claims.JWT_MEMBER_ID).asString()
+                if (memberId != "") {
+                    MemberContextService.setMemberId(memberId.toInt())
+
                     JWTPrincipal(credential.payload)
                 } else {
                     null
