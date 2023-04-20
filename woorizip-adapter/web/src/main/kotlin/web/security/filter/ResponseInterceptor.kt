@@ -4,6 +4,7 @@ import core.context.MemberContextService
 import io.ktor.serialization.Configuration
 import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.BaseApplicationPlugin
+import io.ktor.server.response.ApplicationSendPipeline
 import io.ktor.util.AttributeKey
 
 class ResponseInterceptor {
@@ -16,7 +17,7 @@ class ResponseInterceptor {
         ): ResponseInterceptor {
             val plugin = ResponseInterceptor()
 
-            pipeline.intercept(ApplicationCallPipeline.Call) {
+            pipeline.sendPipeline.intercept(ApplicationSendPipeline.After) {
                 MemberContextService.clear()
             }
 
