@@ -3,7 +3,9 @@ package core.member.model
 import core.annotation.AggregateRoot
 import core.annotation.SubDomain
 import core.member.exception.OutOfLengthLimitException
+import core.member.exception.PasswordMisMatchException
 import kotlinx.serialization.Serializable
+import org.mindrot.jbcrypt.BCrypt
 
 @Serializable
 @AggregateRoot
@@ -33,6 +35,12 @@ data class Member(
                 lengths = selfIntroduce.length,
                 message = "자기소개는 $SELF_INTRODUCE_MAX_LENGTH 글자 이하로 이루어져야 합니다."
             )
+        }
+    }
+
+    fun checkIsSamePassword(rawPassword: Password) {
+        if (!this.password.isSame(rawPassword)) {
+            throw PasswordMisMatchException(rawPassword.value)
         }
     }
 
@@ -88,7 +96,10 @@ value class Password(
     val value: String
 ) {
     init {
-        if (value.length > PASSWORD_MAX_LENGTH || value.length < PASSWORD_MIN_LENGTH) {
+        if (
+            (value.length > PASSWORD_MAX_LENGTH || value.length < PASSWORD_MIN_LENGTH) &&
+            value.length != ENCODED_PASSWORD_LENGTH
+        ) {
             throw OutOfLengthLimitException(
                 lengths = value.length,
                 message = "비밀번호는 $PASSWORD_MIN_LENGTH ~ $PASSWORD_MAX_LENGTH 글자로 이루어져야 합니다."
@@ -96,8 +107,19 @@ value class Password(
         }
     }
 
+    fun isSame(rawPassword: Password): Boolean {
+        return BCrypt.checkpw(rawPassword.value, this.value)
+    }
+
+    fun encode(): Password {
+        return Password(
+            BCrypt.hashpw(this.value, BCrypt.gensalt())
+        )
+    }
+
     companion object {
-        const val PASSWORD_MIN_LENGTH = 8
-        const val PASSWORD_MAX_LENGTH = 32
+        private const val PASSWORD_MIN_LENGTH = 8
+        private const val PASSWORD_MAX_LENGTH = 32
+        const val ENCODED_PASSWORD_LENGTH = 60
     }
 }

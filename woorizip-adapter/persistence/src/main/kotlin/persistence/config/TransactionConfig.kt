@@ -12,7 +12,6 @@ import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.experimental.suspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transactionManager
-import persistence.config.DatabaseConnector.database
 import persistence.exception.throwAsDomainException
 
 class TransactionConfig : TransactionPort {
@@ -28,7 +27,8 @@ class TransactionConfig : TransactionPort {
                 }
             } else {
                 newSuspendedTransaction(
-                    db = database, context = Dispatchers.IO,
+                    db = database,
+                    context = Dispatchers.IO,
                     transactionIsolation = IsolationLevel.TRANSACTION_REPEATABLE_READ.levelId
                 ) {
                     addLogger(StdOutSqlLogger)

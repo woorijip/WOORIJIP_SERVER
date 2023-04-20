@@ -2,12 +2,12 @@ package web.config
 
 import common.exception.BaseErrorCode
 import common.exception.BaseException
+import common.exception.ErrorResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
-import kotlinx.serialization.Serializable
 
 fun Application.errorHandling() {
     install(StatusPages) {
@@ -25,6 +25,7 @@ fun Application.errorHandling() {
                 }
 
                 else -> {
+                    cause.printStackTrace()
                     call.respond(
                         message = ErrorResponse(
                             code = BaseErrorCode.UNHANDLED_EXCEPTION.code,
@@ -38,13 +39,6 @@ fun Application.errorHandling() {
     }
 }
 
-@Serializable
-data class ErrorResponse(
-    val code: String,
-    val message: String,
-    val arguments: Collection<String>? = null
-)
-
 private fun BaseException.getHttpStatusCode(): HttpStatusCode {
     return when (this) {
         is BaseException.BadRequestException -> HttpStatusCode.BadRequest
@@ -52,7 +46,6 @@ private fun BaseException.getHttpStatusCode(): HttpStatusCode {
         is BaseException.ForbiddenException -> HttpStatusCode.Forbidden
         is BaseException.NotFoundException -> HttpStatusCode.NotFound
         is BaseException.ConflictException -> HttpStatusCode.Conflict
-
-        else -> HttpStatusCode.InternalServerError
+        is BaseException.UnhandledException -> HttpStatusCode.InternalServerError
     }
 }

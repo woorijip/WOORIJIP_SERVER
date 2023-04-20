@@ -18,7 +18,7 @@ class SignUp(
             memberService.checkNotExistsEmail(input.email)
             memberService.checkNotExistsPhoneNumber(input.phoneNumber)
 
-            val savedMember = memberService.saveMember(
+            val savedMember = memberService.signUp(
                 input.toDomain()
             )
 

@@ -5,6 +5,7 @@ import core.member.model.Member
 import core.member.spi.CommandMemberPort
 
 interface CommandMemberService {
+    suspend fun signUp(member: Member): Member
     suspend fun saveMember(member: Member): Member
     suspend fun saveInterestCategories(
         memberId: Int,
@@ -13,6 +14,12 @@ interface CommandMemberService {
 }
 
 class CommandMemberServiceImpl(private val commandMemberPort: CommandMemberPort) : CommandMemberService {
+    override suspend fun signUp(member: Member): Member {
+        return commandMemberPort.saveMember(
+            member.copy(password = member.password.encode())
+        )
+    }
+
     override suspend fun saveMember(member: Member): Member {
         return commandMemberPort.saveMember(member)
     }
