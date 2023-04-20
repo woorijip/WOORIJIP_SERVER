@@ -7,7 +7,7 @@ import io.ktor.server.application.BaseApplicationPlugin
 import io.ktor.server.response.ApplicationSendPipeline
 import io.ktor.util.AttributeKey
 
-class ResponseInterceptor {
+class ResponseInterceptor private constructor() {
     companion object Plugin : BaseApplicationPlugin<ApplicationCallPipeline, Configuration, ResponseInterceptor> {
         override val key = AttributeKey<ResponseInterceptor>("ResponseInterceptor")
 
