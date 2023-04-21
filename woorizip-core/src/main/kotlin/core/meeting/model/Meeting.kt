@@ -16,7 +16,7 @@ data class Meeting(
     val thumbnail: String,
     val space: Space,
     val description: String,
-    val schedules: List<Schedule>,
+    val meetingSchedules: List<MeetingSchedule>,
     val categories: List<MeetingCategory>,
     val createMemberId: Int,
     val createdAt: LocalDateTime = LocalDateTime.now(),
@@ -41,14 +41,6 @@ data class Meeting(
         val type: SpaceType,
         val images: List<String>
     ) {
-        init {
-            if (location.length > LOCATION_MAX_LENGTH) {
-                throw OutOfLengthLimitException(
-                    lengths = location.length,
-                    message = "모임 장소는 $LOCATION_MAX_LENGTH 글자 이하로 이루어져야 합니다."
-                )
-            }
-        }
 
         enum class SpaceType(val value: String) {
             HOUSE("집"),
@@ -59,10 +51,6 @@ data class Meeting(
             SHARED_SPACE("공유 공간")
             ;
         }
-
-        companion object {
-            const val LOCATION_MAX_LENGTH = 255
-        }
     }
 
     companion object {
@@ -72,7 +60,7 @@ data class Meeting(
 }
 
 @SubDomain
-data class Schedule(
+data class MeetingSchedule(
     val meetingId: Int,
     val date: LocalDate,
     val time: LocalTime,

@@ -2,7 +2,7 @@ package core.meeting.usecase.result
 
 import core.meeting.model.Category
 import core.meeting.model.Meeting
-import core.meeting.model.Schedule
+import core.meeting.model.MeetingSchedule
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -29,11 +29,11 @@ data class MeetingOutput(
         val maxMember: Int
     ) {
         companion object {
-            fun of(schedule: Schedule) = ScheduleOutput(
-                meetingId = schedule.meetingId,
-                date = schedule.date,
-                time = schedule.time,
-                maxMember = schedule.maxMember
+            fun of(meetingSchedule: MeetingSchedule) = ScheduleOutput(
+                meetingId = meetingSchedule.meetingId,
+                date = meetingSchedule.date,
+                time = meetingSchedule.time,
+                maxMember = meetingSchedule.maxMember
             )
         }
     }
@@ -48,7 +48,7 @@ data class MeetingOutput(
             type = meeting.space.type.value,
             images = meeting.space.images,
             description = meeting.description,
-            schedules = meeting.schedules.map { ScheduleOutput.of(it) },
+            schedules = meeting.meetingSchedules.map { ScheduleOutput.of(it) },
             categories = meeting.categories.map { it.category },
             createMemberId = meeting.createMemberId,
             createdAt = meeting.createdAt,
