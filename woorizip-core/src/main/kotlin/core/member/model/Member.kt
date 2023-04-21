@@ -54,20 +54,7 @@ data class Member(
 data class InterestCategory(
     val category: Category,
     val memberId: Int
-) {
-    init {
-        if (category.value.length > CATEGORY_NAME_MAX_LENGTH) {
-            throw OutOfLengthLimitException(
-                lengths = category.value.length,
-                message = "관심 카테고리는 $CATEGORY_NAME_MAX_LENGTH 글자 이하로 이루어져야 합니다."
-            )
-        }
-    }
-
-    companion object {
-        const val CATEGORY_NAME_MAX_LENGTH = 20
-    }
-}
+)
 
 @JvmInline
 value class Email(
