@@ -7,7 +7,6 @@ import core.member.model.Password
 import core.member.service.MemberService
 import core.member.usecase.result.MemberOutput
 import core.outport.TransactionPort
-import kotlinx.serialization.Serializable
 
 class SignUp(
     private val memberService: MemberService,
@@ -26,14 +25,13 @@ class SignUp(
             input.interestCategories?.let {
                 memberService.saveInterestCategories(savedMember.id, it)
 
-                return@withNewTransaction MemberOutput(savedMember, it)
+                return@withNewTransaction MemberOutput.of(savedMember, it)
             }
 
-            return@withNewTransaction MemberOutput(savedMember)
+            return@withNewTransaction MemberOutput.of(savedMember)
         }
     }
 
-    @Serializable
     data class Input(
         val name: String,
         val email: Email,

@@ -1,47 +1,38 @@
 package web.config
 
-import io.ktor.serialization.kotlinx.json.json
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer
+import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
+
 fun Application.serialization() {
-    val serializers = SerializersModule {
-        contextual(LocalDateTime::class, LocalDateTimeSerializer)
-    }
-
     install(ContentNegotiation) {
-        json(
-            Json {
-                serializersModule = serializers
-                prettyPrint = true
-                isLenient = true
-            }
-        )
-    }
-}
+        jackson {
+            enable(SerializationFeature.INDENT_OUTPUT)
+            registerModule(JavaTimeModule().apply {
+                addSerializer(LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME))
+                addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME))
 
-object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
-    private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
+                addSerializer(LocalDateSerializer(DateTimeFormatter.ISO_DATE))
+                addDeserializer(LocalDate::class.java, LocalDateDeserializer(DateTimeFormatter.ISO_DATE))
 
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor(LocalDateTime::class.simpleName!!, PrimitiveKind.STRING)
-
-    override fun deserialize(decoder: Decoder): LocalDateTime =
-        LocalDateTime.parse(decoder.decodeString(), formatter)
-
-    override fun serialize(encoder: Encoder, value: LocalDateTime) {
-        val formatted: String = value.format(formatter)
-        encoder.encodeString(formatted)
+                addSerializer(LocalTimeSerializer(timeFormat))
+                addDeserializer(LocalTime::class.java, LocalTimeDeserializer(timeFormat))
+            })
+        }
     }
 }

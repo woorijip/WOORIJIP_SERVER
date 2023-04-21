@@ -6,7 +6,6 @@ import core.member.service.MemberService
 import core.member.usecase.result.TokenOutput
 import core.outport.TokenPort
 import core.outport.TransactionPort
-import kotlinx.serialization.Serializable
 
 class SignIn(
     private val memberService: MemberService,
@@ -23,7 +22,6 @@ class SignIn(
         }
     }
 
-    @Serializable
     data class Input(
         val email: Email,
         val password: Password

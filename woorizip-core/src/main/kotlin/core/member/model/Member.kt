@@ -5,10 +5,8 @@ import core.annotation.SubDomain
 import core.meeting.model.Category
 import core.member.exception.OutOfLengthLimitException
 import core.member.exception.PasswordMisMatchException
-import kotlinx.serialization.Serializable
 import org.mindrot.jbcrypt.BCrypt
 
-@Serializable
 @AggregateRoot
 data class Member(
     val id: Int = 0,
@@ -52,7 +50,6 @@ data class Member(
     }
 }
 
-@Serializable
 @SubDomain
 data class InterestCategory(
     val category: Category,
@@ -72,7 +69,6 @@ data class InterestCategory(
     }
 }
 
-@Serializable
 @JvmInline
 value class Email(
     val value: String
@@ -91,7 +87,6 @@ value class Email(
     }
 }
 
-@Serializable
 @JvmInline
 value class Password(
     val value: String
