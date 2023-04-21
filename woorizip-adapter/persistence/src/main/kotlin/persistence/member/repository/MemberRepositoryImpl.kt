@@ -41,7 +41,7 @@ class MemberRepositoryImpl : MemberRepository {
     override suspend fun saveAllInterestCategories(categories: List<InterestCategory>): List<InterestCategory> {
         return InterestCategoryTable
             .batchInsert(categories, ignore = false, shouldReturnGeneratedValues = true) { category ->
-                this[InterestCategoryTable.categoryName] = category.category.value
+                this[InterestCategoryTable.categoryName] = category.category
                 this[InterestCategoryTable.memberId] = category.memberId
             }
             .map { InterestCategoryTable.toDomain(it)!! }

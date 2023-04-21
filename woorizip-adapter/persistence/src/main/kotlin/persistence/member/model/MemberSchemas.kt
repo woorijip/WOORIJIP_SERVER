@@ -36,7 +36,7 @@ internal fun MemberTable.toDomain(row: ResultRow?): Member? {
 }
 
 object InterestCategoryTable : Table("tbl_interest_category") {
-    val categoryName = varchar("category_name", length = InterestCategory.CATEGORY_NAME_MAX_LENGTH)
+    val categoryName = enumerationByName<Category>("category_name", length = InterestCategory.CATEGORY_NAME_MAX_LENGTH)
     val memberId = reference("member_id", MemberTable.id)
 
     override val primaryKey = PrimaryKey(categoryName, memberId)
@@ -45,7 +45,7 @@ object InterestCategoryTable : Table("tbl_interest_category") {
 internal fun InterestCategoryTable.toDomain(row: ResultRow?): InterestCategory? {
     return row?.let {
         InterestCategory(
-            category = Category.from(row[this.categoryName]),
+            category = row[this.categoryName],
             memberId = row[this.memberId]
         )
     }
