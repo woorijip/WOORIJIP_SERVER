@@ -1,5 +1,12 @@
 package core
 
+import core.meeting.service.CheckMeetingService
+import core.meeting.service.CheckMeetingServiceImpl
+import core.meeting.service.CommandMeetingService
+import core.meeting.service.CommandMeetingServiceImpl
+import core.meeting.service.MeetingService
+import core.meeting.service.QueryMeetingService
+import core.meeting.service.QueryMeetingServiceImpl
 import core.member.service.CheckMemberService
 import core.member.service.CheckMemberServiceImpl
 import core.member.service.CommandMemberService
@@ -25,6 +32,12 @@ internal val serviceModule = module {
     singleOf(::QueryMemberServiceImpl) bind QueryMemberService::class
     singleOf(::CommandMemberServiceImpl) bind CommandMemberService::class
     singleOf(::CheckMemberServiceImpl) bind CheckMemberService::class
+
+    // meeting
+    singleOf(::MeetingService)
+    singleOf(::QueryMeetingServiceImpl) bind QueryMeetingService::class
+    singleOf(::CommandMeetingServiceImpl) bind CommandMeetingService::class
+    singleOf(::CheckMeetingServiceImpl) bind CheckMeetingService::class
 }
 
 internal val useCaseModule = module {
