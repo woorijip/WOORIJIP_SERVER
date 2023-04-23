@@ -36,7 +36,7 @@ subprojects {
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
     }
 
-    tasks.create("installGitHooks") {
+    tasks.register("installGitHooks") {
         doLast {
             val gitDir = file(".git")
             val prePushFile = file(".githooks/pre-push")
