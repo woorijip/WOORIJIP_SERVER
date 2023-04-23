@@ -2,12 +2,11 @@ package core.member.model
 
 import core.annotation.AggregateRoot
 import core.annotation.SubDomain
+import core.meeting.model.Category
 import core.member.exception.OutOfLengthLimitException
 import core.member.exception.PasswordMisMatchException
-import kotlinx.serialization.Serializable
 import org.mindrot.jbcrypt.BCrypt
 
-@Serializable
 @AggregateRoot
 data class Member(
     val id: Int = 0,
@@ -51,27 +50,12 @@ data class Member(
     }
 }
 
-@Serializable
 @SubDomain
 data class InterestCategory(
-    val categoryName: String,
+    val category: Category,
     val memberId: Int
-) {
-    init {
-        if (categoryName.length > CATEGORY_NAME_MAX_LENGTH) {
-            throw OutOfLengthLimitException(
-                lengths = categoryName.length,
-                message = "관심 카테고리는 $CATEGORY_NAME_MAX_LENGTH 글자 이하로 이루어져야 합니다."
-            )
-        }
-    }
+)
 
-    companion object {
-        const val CATEGORY_NAME_MAX_LENGTH = 15
-    }
-}
-
-@Serializable
 @JvmInline
 value class Email(
     val value: String
@@ -90,7 +74,6 @@ value class Email(
     }
 }
 
-@Serializable
 @JvmInline
 value class Password(
     val value: String

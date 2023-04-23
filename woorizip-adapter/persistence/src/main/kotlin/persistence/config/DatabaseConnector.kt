@@ -9,6 +9,10 @@ import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
+import persistence.meeting.model.MeetingCategoryTable
+import persistence.meeting.model.MeetingImageTable
+import persistence.meeting.model.MeetingScheduleTable
+import persistence.meeting.model.MeetingTable
 import persistence.member.model.InterestCategoryTable
 import persistence.member.model.MemberTable
 
@@ -34,7 +38,11 @@ fun Application.databaseConnector() {
 
     val tables: Array<Table> = arrayOf(
         MemberTable,
-        InterestCategoryTable
+        InterestCategoryTable,
+        MeetingTable,
+        MeetingImageTable,
+        MeetingScheduleTable,
+        MeetingCategoryTable
     )
 
     transaction(database) {

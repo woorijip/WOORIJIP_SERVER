@@ -24,9 +24,10 @@ class MemberRepositoryImpl : MemberRepository {
             .empty().not()
     }
 
-    override suspend fun saveMember(member: Member): Member {
+    override suspend fun insertMember(member: Member): Member {
         return MemberTable
             .insert {
+                it[id] = member.id
                 it[name] = member.name
                 it[email] = member.email.value
                 it[password] = member.password.value
@@ -38,10 +39,10 @@ class MemberRepositoryImpl : MemberRepository {
             .let { MemberTable.toDomain(it)!! }
     }
 
-    override suspend fun saveAllInterestCategories(categories: List<InterestCategory>): List<InterestCategory> {
+    override suspend fun insertAllInterestCategories(categories: List<InterestCategory>): List<InterestCategory> {
         return InterestCategoryTable
             .batchInsert(categories, ignore = false, shouldReturnGeneratedValues = true) { category ->
-                this[InterestCategoryTable.categoryName] = category.categoryName
+                this[InterestCategoryTable.categoryName] = category.category
                 this[InterestCategoryTable.memberId] = category.memberId
             }
             .map { InterestCategoryTable.toDomain(it)!! }

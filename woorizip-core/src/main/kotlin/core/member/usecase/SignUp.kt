@@ -1,12 +1,12 @@
 package core.member.usecase
 
+import core.meeting.model.Category
 import core.member.model.Email
 import core.member.model.Member
 import core.member.model.Password
 import core.member.service.MemberService
 import core.member.usecase.result.MemberOutput
 import core.outport.TransactionPort
-import kotlinx.serialization.Serializable
 
 class SignUp(
     private val memberService: MemberService,
@@ -22,17 +22,16 @@ class SignUp(
                 input.toDomain()
             )
 
-            input.interestCategoryNames?.let {
+            input.interestCategories?.let {
                 memberService.saveInterestCategories(savedMember.id, it)
 
-                return@withNewTransaction MemberOutput(savedMember, it)
+                return@withNewTransaction MemberOutput.of(savedMember, it)
             }
 
-            return@withNewTransaction MemberOutput(savedMember)
+            return@withNewTransaction MemberOutput.of(savedMember)
         }
     }
 
-    @Serializable
     data class Input(
         val name: String,
         val email: Email,
@@ -40,7 +39,7 @@ class SignUp(
         val age: Int,
         val password: Password,
         val selfIntroduce: String? = null,
-        val interestCategoryNames: List<String>? = null
+        val interestCategories: List<Category>? = null
     ) {
         fun toDomain(): Member {
             return Member(

@@ -1,18 +1,20 @@
-package persistence.exception
+package core.meeting.exception
 
 import common.exception.BaseException
 import common.exception.ErrorCode
 
-enum class PersistenceErrorCode(
+enum class MeetingErrorCode(
     override val sequence: Int,
     override val message: String
 ) : ErrorCode {
 
-    DUPLICATE_KEY_VALUE(1, "Duplicate key value violates unique constraint")
+    OUT_OF_LENGTH_LIMIT(1, "Out of length limit"),
+    MEETING_NOT_FOUND(2, "Meeting is not found"),
+    ALREADY_EXISTS(3, "Meeting Already Exists")
 
     ;
 
-    val code = getCode(prefix = "PERSISTENCE")
+    val code = getCode(prefix = "MEETING")
 
     companion object {
         fun from(code: String) = values().firstOrNull { it.code == code }

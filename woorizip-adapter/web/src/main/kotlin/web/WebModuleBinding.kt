@@ -5,6 +5,7 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import web.meeting.MeetingRestApi
 import web.member.MemberRestApi
 import web.security.token.TokenAdapter
 
@@ -19,6 +20,9 @@ internal val apiModule = module {
 
     // member
     singleOf(::MemberRestApi) bind Api::class
+
+    // meeting
+    singleOf(::MeetingRestApi) bind Api::class
 }
 
 val securityModule: Module

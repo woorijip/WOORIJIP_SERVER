@@ -29,7 +29,7 @@ class TransactionConfig : TransactionPort {
                 newSuspendedTransaction(
                     db = database,
                     context = Dispatchers.IO,
-                    transactionIsolation = IsolationLevel.TRANSACTION_REPEATABLE_READ.levelId
+                    transactionIsolation = IsolationLevel.TRANSACTION_READ_COMMITTED.levelId,
                 ) {
                     addLogger(StdOutSqlLogger)
                     block()

@@ -34,7 +34,7 @@ fun Application.security() {
 
             validate { credential ->
                 val memberId = credential.payload.getClaim(Claims.JWT_MEMBER_ID).asString()
-                if (memberId != "") {
+                if (memberId != null) {
                     MemberContextService.setMemberId(memberId.toInt())
 
                     JWTPrincipal(credential.payload)

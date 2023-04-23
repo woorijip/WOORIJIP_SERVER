@@ -24,13 +24,13 @@ class MemberPersistenceAdapter(
     }
 
     override suspend fun saveMember(member: Member): Member {
-        return memberRepository.saveMember(member)
+        return memberRepository.insertMember(member)
     }
 
     override suspend fun saveAllInterestCategories(
         memberId: Int,
         interestCategories: List<InterestCategory>
     ): List<InterestCategory> {
-        return memberRepository.saveAllInterestCategories(interestCategories)
+        return memberRepository.insertAllInterestCategories(interestCategories)
     }
 }
