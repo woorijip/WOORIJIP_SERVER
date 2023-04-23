@@ -18,7 +18,7 @@ object MeetingTable : IntIdTable("tbl_meeting") {
     val introduction = varchar("introduction", length = Meeting.INTRODUCTION_MAX_LENGTH)
     val thumbnailImage = varchar("thumbnail_image", length = 255)
     val location = text("location")
-    val spaceType = varchar("space_type", length = 255)
+    val spaceType = enumerationByName<Meeting.Space.SpaceType>("space_type", length = 15)
     val description = varchar("description", length = 255)
     val createMemberId = reference("create_member_id", MemberTable.id)
     val createdAt = datetime("created_at").clientDefault { LocalDateTime.now() }
@@ -49,36 +49,41 @@ object MeetingCategoryTable : Table("tbl_meeting_category") {
     override val primaryKey = PrimaryKey(categoryName, meetingId)
 }
 
-internal fun MeetingTable.toDomain(row: ResultRow?): Meeting? {
-    return row?.let {
+internal fun MeetingTable.toDomain(
+    meetingRow: ResultRow?,
+    imageRow: List<ResultRow>,
+    scheduleRow: List<ResultRow>,
+    categoryRow: List<ResultRow>
+): Meeting? {
+    return meetingRow?.let {
         Meeting(
-            id = row[this.id].value,
-            name = row[this.name],
-            introduction = row[this.introduction],
-            thumbnail = row[this.thumbnailImage],
+            id = meetingRow[this.id].value,
+            name = meetingRow[this.name],
+            introduction = meetingRow[this.introduction],
+            thumbnail = meetingRow[this.thumbnailImage],
             space = Meeting.Space(
-                type = Meeting.Space.SpaceType.valueOf(row[this.spaceType]),
-                location = row[this.location],
-                images = row[MeetingImageTable.image].split(",")
+                type = meetingRow[this.spaceType],
+                location = meetingRow[this.location],
+                images = imageRow.map { image -> image[MeetingImageTable.image] }
             ),
-            description = row[this.description],
-            meetingSchedules = listOf(
+            description = meetingRow[this.description],
+            meetingSchedules = scheduleRow.map { schedule ->
                 MeetingSchedule(
-                    date = row[MeetingScheduleTable.date],
-                    meetingId = row[MeetingScheduleTable.meetingId].value,
-                    time = row[MeetingScheduleTable.time],
-                    maxMember = row[MeetingScheduleTable.maxMember],
+                    date = schedule[MeetingScheduleTable.date],
+                    meetingId = schedule[MeetingScheduleTable.meetingId].value,
+                    time = schedule[MeetingScheduleTable.time],
+                    maxMember = schedule[MeetingScheduleTable.maxMember],
                 )
-            ),
-            categories = listOf(
+            },
+            categories = categoryRow.map { category ->
                 MeetingCategory(
-                    category = row[MeetingCategoryTable.categoryName],
-                    meetingId = row[MeetingCategoryTable.meetingId].value
+                    category = category[MeetingCategoryTable.categoryName],
+                    meetingId = category[MeetingCategoryTable.meetingId].value
                 )
-            ),
-            createMemberId = row[this.createMemberId].value,
-            createdAt = row[this.createdAt],
-            updatedAt = row[this.updatedAt]
+            },
+            createMemberId = meetingRow[this.createMemberId].value,
+            createdAt = meetingRow[this.createdAt],
+            updatedAt = meetingRow[this.updatedAt]
         )
     }
 }
