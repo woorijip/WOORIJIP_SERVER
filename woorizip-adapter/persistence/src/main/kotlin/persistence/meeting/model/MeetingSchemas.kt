@@ -21,8 +21,8 @@ object MeetingTable : IntIdTable("tbl_meeting") {
     val spaceType = enumerationByName<Meeting.Space.SpaceType>("space_type", length = 15)
     val description = varchar("description", length = 255)
     val createMemberId = reference("create_member_id", MemberTable.id)
-    val createdAt = datetime("created_at").clientDefault { LocalDateTime.now() }
-    val updatedAt = datetime("updated_at").clientDefault { LocalDateTime.now() }
+    val createdAt = datetime("created_at").clientDefault(LocalDateTime::now)
+    val updatedAt = datetime("updated_at").clientDefault(LocalDateTime::now)
 }
 
 object MeetingImageTable : Table("tbl_meeting_image") {
