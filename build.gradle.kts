@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
@@ -38,9 +39,9 @@ subprojects {
     tasks.create("installGitHooks") {
         doLast {
             val gitDir = file(".git")
-            val preCommitFile = file(".githooks/pre-push")
+            val prePushFile = file(".githooks/pre-push")
 
-            if (!gitDir.exists() || !preCommitFile.exists()) {
+            if (!gitDir.exists() || !prePushFile.exists()) {
                 return@doLast
             }
 
@@ -53,6 +54,14 @@ subprojects {
     }
 
     tasks.build {
+        dependsOn("installGitHooks")
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "17"
+        }
         dependsOn("installGitHooks")
     }
 }
