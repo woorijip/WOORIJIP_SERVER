@@ -7,6 +7,6 @@ import org.jetbrains.exposed.sql.Op
 interface MemberRepository {
     suspend fun findBy(where: () -> Op<Boolean>): Member?
     suspend fun existsBy(where: () -> Op<Boolean>): Boolean
-    suspend fun saveMember(member: Member): Member
-    suspend fun saveAllInterestCategories(categories: List<InterestCategory>): List<InterestCategory>
+    suspend fun insertMember(member: Member): Member
+    suspend fun insertAllInterestCategories(categories: List<InterestCategory>): List<InterestCategory>
 }
