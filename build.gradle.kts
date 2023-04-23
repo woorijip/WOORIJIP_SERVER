@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
 plugins {
     kotlin("jvm") version "1.8.20"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
@@ -30,5 +33,26 @@ subprojects {
 
     dependencies {
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
+    }
+
+    tasks.create("installGitHooks") {
+        doLast {
+            val gitDir = file(".git")
+            val preCommitFile = file(".githooks/pre-push")
+
+            if (!gitDir.exists() || !preCommitFile.exists()) {
+                return@doLast
+            }
+
+            Files.copy(
+                File(".githooks/pre-push").toPath(),
+                File(".git/hooks/pre-push").toPath(),
+                StandardCopyOption.REPLACE_EXISTING,
+            )
+        }
+    }
+
+    tasks.build {
+        dependsOn("installGitHooks")
     }
 }
