@@ -11,7 +11,7 @@ if [ $EXIT_CODE -ne 0 ]; then
   rm $OUTPUT
   echo "***********************************************"
   echo "                 Detekt failed                 "
-  echo " Please fix the above issues before committing "
+  echo " Please fix the above issues before pushing    "
   echo "***********************************************"
   exit $EXIT_CODE
 fi
