@@ -26,7 +26,10 @@ fun Application.serialization() {
             registerModule(
                 JavaTimeModule().apply {
                     addSerializer(LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME))
-                    addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME))
+                    addDeserializer(
+                        LocalDateTime::class.java,
+                        LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME)
+                    )
 
                     addSerializer(LocalDateSerializer(DateTimeFormatter.ISO_DATE))
                     addDeserializer(LocalDate::class.java, LocalDateDeserializer(DateTimeFormatter.ISO_DATE))
