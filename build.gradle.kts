@@ -32,7 +32,7 @@ subprojects {
         mavenCentral()
     }
 
-    tasks.register("installGitHooks") {
+    tasks.create("installGitHooks") {
         doLast {
             val gitDir = file(".git")
             val prePushFile = file(".githooks/pre-push")
