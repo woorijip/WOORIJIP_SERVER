@@ -32,10 +32,6 @@ subprojects {
         mavenCentral()
     }
 
-    dependencies {
-        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
-    }
-
     tasks.register("installGitHooks") {
         doLast {
             val gitDir = file(".git")
@@ -63,5 +59,9 @@ subprojects {
             jvmTarget = "17"
         }
         dependsOn("installGitHooks")
+    }
+
+    dependencies {
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
     }
 }
