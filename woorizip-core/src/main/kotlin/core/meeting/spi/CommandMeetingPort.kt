@@ -1,3 +1,7 @@
 package core.meeting.spi
 
-interface CommandMeetingPort
+import core.meeting.model.Meeting
+
+interface CommandMeetingPort {
+    suspend fun saveMeeting(meeting: Meeting): Meeting
+}

@@ -41,7 +41,7 @@ class MemberRepositoryImpl : MemberRepository {
 
     override suspend fun insertAllInterestCategories(categories: List<InterestCategory>): List<InterestCategory> {
         return InterestCategoryTable
-            .batchInsert(categories, ignore = false, shouldReturnGeneratedValues = true) { category ->
+            .batchInsert(categories) { category ->
                 this[InterestCategoryTable.categoryName] = category.category
                 this[InterestCategoryTable.memberId] = category.memberId
             }

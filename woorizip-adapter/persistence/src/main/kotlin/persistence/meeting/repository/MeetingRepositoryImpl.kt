@@ -1,9 +1,9 @@
 package persistence.meeting.repository
 
-import core.meeting.model.Category
 import core.meeting.model.Meeting
-import core.meeting.model.MeetingSchedule
 import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import persistence.meeting.model.MeetingCategoryTable
 import persistence.meeting.model.MeetingImageTable
@@ -67,18 +67,41 @@ class MeetingRepositoryImpl : MeetingRepository {
     }
 
     override suspend fun insertMeeting(meeting: Meeting): Meeting {
-        TODO("Not yet implemented")
-    }
+        val meetingResult = MeetingTable.insert {
+            it[id] = meeting.id
+            it[name] = meeting.name
+            it[introduction] = meeting.introduction
+            it[thumbnailImage] = meeting.thumbnail
+            it[location] = meeting.space.location
+            it[spaceType] = meeting.space.type
+            it[description] = meeting.description
+            it[createMemberId] = meeting.createMemberId
+            it[createdAt] = meeting.createdAt
+            it[updatedAt] = meeting.updatedAt
+        }.resultedValues!!.single()
 
-    override suspend fun insertMeetingImage(meetingId: Long, imageUrls: List<String>): Meeting {
-        TODO("Not yet implemented")
-    }
+        val imageResult = MeetingImageTable.batchInsert(meeting.space.images) { image ->
+            this[MeetingImageTable.meetingId] = meetingResult[MeetingTable.id]
+            this[MeetingImageTable.image] = image
+        }
 
-    override suspend fun insertMeetingSchedule(meetingId: Long, schedules: List<MeetingSchedule>): Meeting {
-        TODO("Not yet implemented")
-    }
+        val scheduleResult = MeetingScheduleTable.batchInsert(meeting.meetingSchedules) { schedule ->
+            this[MeetingScheduleTable.meetingId] = meetingResult[MeetingTable.id]
+            this[MeetingScheduleTable.date] = schedule.date
+            this[MeetingScheduleTable.time] = schedule.time
+            this[MeetingScheduleTable.maxMember] = schedule.maxMember
+        }
 
-    override suspend fun insertMeetingCategory(meetingId: Long, categories: List<Category>): Meeting {
-        TODO("Not yet implemented")
+        val categoryResult = MeetingCategoryTable.batchInsert(meeting.categories) { category ->
+            this[MeetingCategoryTable.meetingId] = meetingResult[MeetingTable.id]
+            this[MeetingCategoryTable.categoryName] = category
+        }
+
+        return MeetingTable.toDomain(
+            meetingRow = meetingResult,
+            imageRow = imageResult,
+            scheduleRow = scheduleResult,
+            categoryRow = categoryResult
+        )!!
     }
 }

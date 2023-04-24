@@ -25,11 +25,10 @@ object MeetingTable : IntIdTable("tbl_meeting") {
 }
 
 object MeetingImageTable : Table("tbl_meeting_image") {
-    val sequence = integer("sequence")
-    val meetingId = reference("meeting_id", MeetingTable)
     val image = varchar("image", length = 255)
+    val meetingId = reference("meeting_id", MeetingTable)
 
-    override val primaryKey = PrimaryKey(sequence, meetingId)
+    override val primaryKey = PrimaryKey(image, meetingId)
 }
 
 object MeetingScheduleTable : Table("tbl_meeting_schedule") {
