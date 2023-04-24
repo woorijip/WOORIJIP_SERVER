@@ -1,5 +1,4 @@
 import org.codehaus.groovy.runtime.ProcessGroovyMethods
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
@@ -38,19 +37,7 @@ subprojects {
     }
 }
 
-allprojects {
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "18"
-        }
-        dependsOn("installGitHooks")
-    }
-
-    tasks.build {
-        dependsOn("installGitHooks")
-    }
-}
+fun String.execute() = ProcessGroovyMethods.getText(ProcessGroovyMethods.execute(this))
 
 tasks.create("installGitHooks") {
     doLast {
@@ -71,4 +58,6 @@ tasks.create("installGitHooks") {
     }
 }
 
-fun String.execute() = ProcessGroovyMethods.getText(ProcessGroovyMethods.execute(this))
+tasks.build {
+    dependsOn("installGitHooks")
+}
