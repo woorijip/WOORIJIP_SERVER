@@ -2,7 +2,6 @@ package persistence.meeting.model
 
 import core.meeting.model.Category
 import core.meeting.model.Meeting
-import core.meeting.model.MeetingCategory
 import core.meeting.model.MeetingSchedule
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ResultRow
@@ -70,17 +69,11 @@ internal fun MeetingTable.toDomain(
             meetingSchedules = scheduleRow.map { schedule ->
                 MeetingSchedule(
                     date = schedule[MeetingScheduleTable.date],
-                    meetingId = schedule[MeetingScheduleTable.meetingId].value,
                     time = schedule[MeetingScheduleTable.time],
-                    maxMember = schedule[MeetingScheduleTable.maxMember],
+                    maxMember = schedule[MeetingScheduleTable.maxMember]
                 )
             },
-            categories = categoryRow.map { category ->
-                MeetingCategory(
-                    category = category[MeetingCategoryTable.categoryName],
-                    meetingId = category[MeetingCategoryTable.meetingId].value
-                )
-            },
+            categories = categoryRow.map { category -> category[MeetingCategoryTable.categoryName] },
             createMemberId = meetingRow[this.createMemberId].value,
             createdAt = meetingRow[this.createdAt],
             updatedAt = meetingRow[this.updatedAt]

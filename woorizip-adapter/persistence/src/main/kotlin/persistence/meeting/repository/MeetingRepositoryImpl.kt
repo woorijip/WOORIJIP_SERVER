@@ -1,7 +1,7 @@
 package persistence.meeting.repository
 
+import core.meeting.model.Category
 import core.meeting.model.Meeting
-import core.meeting.model.MeetingCategory
 import core.meeting.model.MeetingSchedule
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.select
@@ -78,7 +78,7 @@ class MeetingRepositoryImpl : MeetingRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun insertMeetingCategory(meetingId: Long, categories: List<MeetingCategory>): Meeting {
+    override suspend fun insertMeetingCategory(meetingId: Long, categories: List<Category>): Meeting {
         TODO("Not yet implemented")
     }
 }
