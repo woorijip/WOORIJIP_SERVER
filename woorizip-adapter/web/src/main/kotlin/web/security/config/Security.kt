@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import common.exception.BaseErrorCode
 import common.exception.ErrorResponse
-import core.context.MemberContextService
+import core.context.MemberContextHolder
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -35,7 +35,7 @@ fun Application.security() {
             validate { credential ->
                 val memberId = credential.payload.getClaim(Claims.JWT_MEMBER_ID).asString()
                 if (memberId != null) {
-                    MemberContextService.setMemberId(memberId.toInt())
+                    MemberContextHolder.setMemberId(memberId.toInt())
 
                     JWTPrincipal(credential.payload)
                 } else {

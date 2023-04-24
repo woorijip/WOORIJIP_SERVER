@@ -1,6 +1,6 @@
 package web.security.filter
 
-import core.context.MemberContextService
+import core.context.MemberContextHolder
 import io.ktor.serialization.Configuration
 import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.BaseApplicationPlugin
@@ -18,7 +18,7 @@ class ResponseInterceptor private constructor() {
             val plugin = ResponseInterceptor()
 
             pipeline.sendPipeline.intercept(ApplicationSendPipeline.After) {
-                MemberContextService.clear()
+                MemberContextHolder.clear()
             }
 
             return plugin
