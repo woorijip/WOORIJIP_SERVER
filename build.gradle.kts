@@ -1,3 +1,4 @@
+import org.codehaus.groovy.runtime.ProcessGroovyMethods
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
@@ -35,12 +36,19 @@ subprojects {
     dependencies {
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
     }
+}
 
+allprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict")
             jvmTarget = "18"
         }
+        dependsOn("installGitHooks")
+    }
+
+    tasks.build {
+        dependsOn("installGitHooks")
     }
 }
 
@@ -49,7 +57,7 @@ tasks.create("installGitHooks") {
         val gitDir = File(".git/hooks/pre-push")
         val prePushFile = File(".githooks/pre-push")
 
-        if(!gitDir.exists()) {
+        if (!gitDir.exists()) {
             gitDir.mkdirs()
         }
 
@@ -58,9 +66,9 @@ tasks.create("installGitHooks") {
             gitDir.toPath(),
             StandardCopyOption.REPLACE_EXISTING,
         )
+
+        "chmod +x ${gitDir.path}".execute()
     }
 }
 
-tasks.build {
-    dependsOn("installGitHooks")
-}
+fun String.execute() = ProcessGroovyMethods.getText(ProcessGroovyMethods.execute(this))
