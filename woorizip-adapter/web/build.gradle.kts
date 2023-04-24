@@ -3,7 +3,6 @@ val logback_version: String by project
 
 plugins {
     kotlin("plugin.serialization") version "1.8.20"
-    id("io.ktor.plugin") version "2.2.4"
 }
 
 dependencies {
@@ -11,8 +10,7 @@ dependencies {
     implementation(projects.woorizipCommon)
     implementation(projects.woorizipCore)
 
-    // jvm
-    implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
+    // cors
     implementation("io.ktor:ktor-server-cors-jvm:$ktor_version")
 
     // auth
