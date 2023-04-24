@@ -23,16 +23,21 @@ fun Application.serialization() {
     install(ContentNegotiation) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
-            registerModule(JavaTimeModule().apply {
-                addSerializer(LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME))
-                addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME))
+            registerModule(
+                JavaTimeModule().apply {
+                    addSerializer(LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME))
+                    addDeserializer(
+                        LocalDateTime::class.java,
+                        LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME)
+                    )
 
-                addSerializer(LocalDateSerializer(DateTimeFormatter.ISO_DATE))
-                addDeserializer(LocalDate::class.java, LocalDateDeserializer(DateTimeFormatter.ISO_DATE))
+                    addSerializer(LocalDateSerializer(DateTimeFormatter.ISO_DATE))
+                    addDeserializer(LocalDate::class.java, LocalDateDeserializer(DateTimeFormatter.ISO_DATE))
 
-                addSerializer(LocalTimeSerializer(timeFormat))
-                addDeserializer(LocalTime::class.java, LocalTimeDeserializer(timeFormat))
-            })
+                    addSerializer(LocalTimeSerializer(timeFormat))
+                    addDeserializer(LocalTime::class.java, LocalTimeDeserializer(timeFormat))
+                }
+            )
         }
     }
 }
