@@ -1,9 +1,11 @@
 package core.meeting.service
 
 class MeetingService(
-    queryMemberService: QueryMeetingService,
-    commandMemberService: CommandMeetingService,
+    queryMeetingService: QueryMeetingService,
+    commandMeetingService: CommandMeetingService,
+    commandMeetingExternalService: CommandMeetingExternalService,
     checkMeetingService: CheckMeetingService
-) : QueryMeetingService by queryMemberService,
-    CommandMeetingService by commandMemberService,
+) : QueryMeetingService by queryMeetingService,
+    CommandMeetingService by commandMeetingService,
+    CommandMeetingExternalService by commandMeetingExternalService,
     CheckMeetingService by checkMeetingService

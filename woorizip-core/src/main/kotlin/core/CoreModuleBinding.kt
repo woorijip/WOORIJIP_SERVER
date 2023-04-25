@@ -2,6 +2,8 @@ package core
 
 import core.meeting.service.CheckMeetingService
 import core.meeting.service.CheckMeetingServiceImpl
+import core.meeting.service.CommandMeetingExternalService
+import core.meeting.service.CommandMeetingExternalServiceImpl
 import core.meeting.service.CommandMeetingService
 import core.meeting.service.CommandMeetingServiceImpl
 import core.meeting.service.MeetingService
@@ -38,6 +40,7 @@ internal val serviceModule = module {
     singleOf(::MeetingService)
     singleOf(::QueryMeetingServiceImpl) bind QueryMeetingService::class
     singleOf(::CommandMeetingServiceImpl) bind CommandMeetingService::class
+    singleOf(::CommandMeetingExternalServiceImpl) bind CommandMeetingExternalService::class
     singleOf(::CheckMeetingServiceImpl) bind CheckMeetingService::class
 }
 
