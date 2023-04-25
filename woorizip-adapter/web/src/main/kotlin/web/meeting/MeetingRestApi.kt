@@ -1,6 +1,5 @@
 package web.meeting
 
-import web.context.MemberContextHolder
 import core.meeting.usecase.CreateMeeting
 import core.member.exception.MemberNotFoundException
 import io.ktor.http.HttpStatusCode
@@ -11,6 +10,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import web.Api
+import web.context.MemberContextHolder
 
 class MeetingRestApi(
     private val createMeeting: CreateMeeting

@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import common.exception.BaseErrorCode
 import common.exception.ErrorResponse
-import web.context.MemberContextHolder
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -13,6 +12,7 @@ import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.response.respond
+import web.context.MemberContextHolder
 import web.security.filter.ResponseInterceptor
 import web.security.token.Claims
 import kotlin.properties.Delegates
