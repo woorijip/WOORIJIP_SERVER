@@ -15,9 +15,6 @@ class SignUp(
 
     suspend operator fun invoke(input: Input): MemberOutput {
         return txPort.withNewTransaction {
-            memberService.checkNotExistsEmail(input.email)
-            memberService.checkNotExistsPhoneNumber(input.phoneNumber)
-
             val savedMember = memberService.signUp(
                 input.toDomain()
             )

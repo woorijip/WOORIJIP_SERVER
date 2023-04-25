@@ -23,14 +23,12 @@ data class MeetingOutput(
     val updatedAt: LocalDateTime
 ) {
     data class ScheduleOutput(
-        val meetingId: Int,
         val date: LocalDate,
         val time: LocalTime,
         val maxMember: Int
     ) {
         companion object {
             fun of(meetingSchedule: MeetingSchedule) = ScheduleOutput(
-                meetingId = meetingSchedule.meetingId,
                 date = meetingSchedule.date,
                 time = meetingSchedule.time,
                 maxMember = meetingSchedule.maxMember
@@ -49,7 +47,7 @@ data class MeetingOutput(
             images = meeting.space.images,
             description = meeting.description,
             schedules = meeting.meetingSchedules.map { ScheduleOutput.of(it) },
-            categories = meeting.categories.map { it.category },
+            categories = meeting.categories,
             createMemberId = meeting.createMemberId,
             createdAt = meeting.createdAt,
             updatedAt = meeting.updatedAt

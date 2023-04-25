@@ -17,7 +17,7 @@ data class Meeting(
     val space: Space,
     val description: String,
     val meetingSchedules: List<MeetingSchedule>,
-    val categories: List<MeetingCategory>,
+    val categories: List<Category>,
     val createMemberId: Int,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = createdAt
@@ -61,30 +61,10 @@ data class Meeting(
 
 @SubDomain
 data class MeetingSchedule(
-    val meetingId: Int,
     val date: LocalDate,
     val time: LocalTime,
-    val maxMember: Int,
+    val maxMember: Int
 )
-
-@SubDomain
-data class MeetingCategory(
-    val category: Category,
-    val meetingId: Int
-) {
-    init {
-        if (category.value.length > CATEGORY_NAME_MAX_LENGTH) {
-            throw OutOfLengthLimitException(
-                lengths = category.value.length,
-                message = "모임 카테고리는 $CATEGORY_NAME_MAX_LENGTH 글자 이하로 이루어져야 합니다."
-            )
-        }
-    }
-
-    companion object {
-        const val CATEGORY_NAME_MAX_LENGTH = 20
-    }
-}
 
 enum class Category(val value: String) {
     HUMAN_RELATIONSHIP("인간관계(친목)"),

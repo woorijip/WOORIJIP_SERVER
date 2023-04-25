@@ -3,7 +3,7 @@ package core.member.exception
 import common.exception.BaseException
 
 class MemberNotFoundException(
-    private val value: Any,
+    private val value: Any? = "",
     override val code: String = MemberErrorCode.MEMBER_NOT_FOUND.code,
     override val message: String = MemberErrorCode.MEMBER_NOT_FOUND.message
 ) : BaseException.NotFoundException(code, message) {
@@ -19,7 +19,7 @@ class OutOfLengthLimitException(
 }
 
 class AlreadyExistsException(
-    private val value: String,
+    private val value: String = "",
     override val code: String = MemberErrorCode.ALREADY_EXISTS.code,
     override val message: String = MemberErrorCode.ALREADY_EXISTS.message
 ) : BaseException.ConflictException(code, message) {
@@ -27,7 +27,7 @@ class AlreadyExistsException(
 }
 
 class PasswordMisMatchException(
-    private val password: String,
+    private val password: String = "",
     override val code: String = MemberErrorCode.PASSWORD_MISMATCH.code,
     override val message: String = MemberErrorCode.PASSWORD_MISMATCH.message
 ) : BaseException.UnauthorizedException(code, message) {
