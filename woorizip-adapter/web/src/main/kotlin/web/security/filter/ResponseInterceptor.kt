@@ -1,6 +1,6 @@
 package web.security.filter
 
-import core.context.MemberContextHolder
+import web.context.MemberContextHolder
 import io.ktor.serialization.Configuration
 import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.BaseApplicationPlugin

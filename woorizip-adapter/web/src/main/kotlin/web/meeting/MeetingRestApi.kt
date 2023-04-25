@@ -1,6 +1,6 @@
 package web.meeting
 
-import core.context.MemberContextHolder
+import web.context.MemberContextHolder
 import core.meeting.usecase.CreateMeeting
 import core.member.exception.MemberNotFoundException
 import io.ktor.http.HttpStatusCode
@@ -20,7 +20,7 @@ class MeetingRestApi(
             post {
                 val input = call.receive<CreateMeeting.Input>()
 
-                val currentMemberId = MemberContextHolder.getMemberId() ?: throw MemberNotFoundException(
+                val currentMemberId = MemberContextHolder.getContext().memberId ?: throw MemberNotFoundException(
                     message = "Member not found in Context holder"
                 )
 
