@@ -1,6 +1,5 @@
 package core.meeting.usecase
 
-import core.context.MemberContextHolder
 import core.meeting.model.Category
 import core.meeting.model.Meeting
 import core.meeting.model.MeetingSchedule
