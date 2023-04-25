@@ -12,6 +12,8 @@ import core.meeting.service.QueryMeetingServiceImpl
 import core.meeting.usecase.CreateMeeting
 import core.member.service.CheckMemberService
 import core.member.service.CheckMemberServiceImpl
+import core.member.service.CommandMemberExternalService
+import core.member.service.CommandMemberExternalServiceImpl
 import core.member.service.CommandMemberService
 import core.member.service.CommandMemberServiceImpl
 import core.member.service.MemberService
@@ -35,6 +37,7 @@ internal val serviceModule = module {
     singleOf(::QueryMemberServiceImpl) bind QueryMemberService::class
     singleOf(::CommandMemberServiceImpl) bind CommandMemberService::class
     singleOf(::CheckMemberServiceImpl) bind CheckMemberService::class
+    singleOf(::CommandMemberExternalServiceImpl) bind CommandMemberExternalService::class
 
     // meeting
     singleOf(::MeetingService)

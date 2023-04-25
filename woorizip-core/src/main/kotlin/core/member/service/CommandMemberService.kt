@@ -1,19 +1,12 @@
 package core.member.service
 
-import core.meeting.model.Category
 import core.member.exception.AlreadyExistsException
-import core.member.model.InterestCategory
 import core.member.model.Member
 import core.member.spi.CommandMemberPort
 import core.member.spi.QueryMemberPort
 
 interface CommandMemberService {
     suspend fun signUp(member: Member): Member
-    suspend fun saveMember(member: Member): Member
-    suspend fun saveInterestCategories(
-        memberId: Int,
-        categories: List<Category>
-    ): List<InterestCategory>
 }
 
 class CommandMemberServiceImpl(
@@ -32,17 +25,5 @@ class CommandMemberServiceImpl(
         return commandMemberPort.saveMember(
             member.copy(password = member.password.encode())
         )
-    }
-
-    override suspend fun saveMember(member: Member): Member {
-        return commandMemberPort.saveMember(member)
-    }
-
-    override suspend fun saveInterestCategories(
-        memberId: Int,
-        categories: List<Category>
-    ): List<InterestCategory> {
-        val interestCategoryModels = categories.map { InterestCategory(it, memberId) }
-        return commandMemberPort.saveAllInterestCategories(memberId, interestCategoryModels)
     }
 }
