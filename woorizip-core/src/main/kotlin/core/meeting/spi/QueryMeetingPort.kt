@@ -1,3 +1,7 @@
 package core.meeting.spi
 
-interface QueryMeetingPort
+import core.meeting.model.Meeting
+
+interface QueryMeetingPort {
+    suspend fun getMeetingById(id: Int): Meeting?
+}
