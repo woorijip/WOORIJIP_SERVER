@@ -3,14 +3,14 @@ package core.meeting.service
 import core.meeting.model.Meeting
 import core.meeting.spi.CommandMeetingPort
 
-interface CommandMeetingService {
-    suspend fun saveMeeting(meeting: Meeting): Meeting
+interface MeetingUseCaseService {
+    suspend fun create(meeting: Meeting): Meeting
 }
 
-class CommandMeetingServiceImpl(
+class MeetingUseCaseServiceImpl(
     private val commandMeetingPort: CommandMeetingPort
-) : CommandMeetingService {
-    override suspend fun saveMeeting(meeting: Meeting): Meeting {
+) : MeetingUseCaseService {
+    override suspend fun create(meeting: Meeting): Meeting {
         return commandMeetingPort.saveMeeting(meeting)
     }
 }

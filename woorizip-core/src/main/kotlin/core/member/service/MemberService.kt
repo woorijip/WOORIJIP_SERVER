@@ -1,11 +1,11 @@
 package core.member.service
 
 class MemberService(
+    memberUseCaseService: MemberUseCaseService,
     queryMemberService: QueryMemberService,
     commandMemberService: CommandMemberService,
-    commandMemberExternalService: CommandMemberExternalService,
     checkMemberService: CheckMemberService
-) : QueryMemberService by queryMemberService,
+) : MemberUseCaseService by memberUseCaseService,
+    QueryMemberService by queryMemberService,
     CommandMemberService by commandMemberService,
-    CommandMemberExternalService by commandMemberExternalService,
     CheckMemberService by checkMemberService
