@@ -58,6 +58,6 @@ tasks.create("installGitHooks") {
     }
 }
 
-tasks.build {
+tasks.compileKotlin {
     dependsOn("installGitHooks")
 }
