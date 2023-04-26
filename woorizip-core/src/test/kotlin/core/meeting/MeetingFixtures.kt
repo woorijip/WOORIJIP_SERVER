@@ -7,7 +7,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-fun createMeeting(
+internal fun createMeeting(
     id: Int = 1,
     name: String = "룰루랄라 모임",
     introduction: String = "안녕하세요 룰루랄라 입니다",
