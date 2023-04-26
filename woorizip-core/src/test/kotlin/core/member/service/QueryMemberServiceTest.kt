@@ -19,20 +19,20 @@ internal class QueryMemberServiceTest : DescribeSpec({
         val memberId = 1
         val member = createMember(id = memberId)
 
-        context("값이 존재한다면") {
+        context("회원이 존재한다면") {
             coEvery { queryMemberPort.getMemberById(memberId) } returns member
 
-            it("Member 객체를 반환한다.") {
+            it("해당하는 회원을 반환한다.") {
                 val result = queryMemberService.getMemberById(memberId)
 
                 result shouldBe member
             }
         }
 
-        context("값이 존재하지 않으면") {
+        context("회원이 존재하지 않으면") {
             coEvery { queryMemberPort.getMemberById(memberId) } returns null
 
-            it("MemberNotFoundException 예외를 반환한다.") {
+            it("MemberNotFoundException 예외를 던진다.") {
                 shouldThrow<MemberNotFoundException> {
                     queryMemberService.getMemberById(memberId)
                 }
@@ -44,20 +44,20 @@ internal class QueryMemberServiceTest : DescribeSpec({
         val email = Email("test@test.com")
         val member = createMember(email = email)
 
-        context("값이 존재한다면") {
+        context("회원이 존재한다면") {
             coEvery { queryMemberPort.getMemberByEmail(email.value) } returns member
 
-            it("Member 객체를 반환한다.") {
+            it("해당하는 회원을 반환한다.") {
                 val result = queryMemberService.getMemberByEmail(email)
 
                 result shouldBe member
             }
         }
 
-        context("값이 존재 하지 않으면") {
+        context("회원이 존재 하지 않으면") {
             coEvery { queryMemberPort.getMemberByEmail(email.value) } returns null
 
-            it("MemberNotFoundException 예외를 반환한다.") {
+            it("MemberNotFoundException 예외를 던진다.") {
                 shouldThrow<MemberNotFoundException> {
                     queryMemberService.getMemberByEmail(email)
                 }

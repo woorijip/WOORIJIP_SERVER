@@ -25,21 +25,21 @@ class MemberUseCaseServiceTest : DescribeSpec({
         val password = Password("passwordpassword")
         val member = createMember(email = email, phoneNumber = phoneNumber, password = password)
 
-        context("이미 존재하는 이메일이 입력되었을 때") {
+        context("해당 이메일을 가지고 있는 회원이 존재하면") {
             coEvery { queryMemberPort.existsMemberByEmail(email.value) } returns true
 
-            it("AlreadyExistsException 예외를 반환한다.") {
+            it("AlreadyExistsException 예외를 던진다.") {
                 shouldThrow<AlreadyExistsException> {
                     memberUseCaseService.signUp(member)
                 }
             }
         }
 
-        context("이미 존재하는 전화번호가 입력되었을 때") {
+        context("해당 전화번호를 가지고 있는 회원이 존재하면") {
             coEvery { queryMemberPort.existsMemberByEmail(email.value) } returns false
             coEvery { queryMemberPort.existsMemberByPhoneNumber(phoneNumber) } returns true
 
-            it("AlreadyExistsException 예외를 반환한다.") {
+            it("AlreadyExistsException 예외를 던진다.") {
                 shouldThrow<AlreadyExistsException> {
                     memberUseCaseService.signUp(member)
                 }
