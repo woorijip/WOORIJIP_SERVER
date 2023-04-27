@@ -25,7 +25,7 @@ subprojects {
         config = files("$rootDir/rules/detekt.yml")
     }
 
-    group = "team.aliens"
+    group = "woorizip-server"
     version = "0.0.1-SNAPSHOT"
 
     repositories {
