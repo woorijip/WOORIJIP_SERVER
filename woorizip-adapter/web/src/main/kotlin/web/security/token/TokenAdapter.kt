@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 import java.util.Date
 
 class TokenAdapter : TokenPort {
-    override suspend fun issueToken(memberId: Int): TokenOutput {
+    override suspend fun issueToken(memberId: Long): TokenOutput {
         val accessToken = issueAccessToken(memberId)
         val accessTokenExpiredAt = LocalDateTime.now().plusSeconds(SecurityProperties.accessExpired)
 
@@ -19,7 +19,7 @@ class TokenAdapter : TokenPort {
         )
     }
 
-    private fun issueAccessToken(memberId: Int): String {
+    private fun issueAccessToken(memberId: Long): String {
         return JWT.create()
             .withHeader(mapOf("JWT" to "access"))
             .withAudience(SecurityProperties.audience)

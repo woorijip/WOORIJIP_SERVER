@@ -5,7 +5,7 @@ object MemberContextHolder {
     private val contextThread: ThreadLocal<MemberContext> = ThreadLocal.withInitial { MemberContext() }
 
     class MemberContext(
-        var memberId: Int? = null
+        var memberId: Long? = null
     )
 
     fun getContext(): MemberContext {

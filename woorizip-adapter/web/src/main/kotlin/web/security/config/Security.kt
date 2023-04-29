@@ -37,7 +37,7 @@ fun Application.security() {
                 if (memberId != null) {
                     MemberContextHolder.setContext(
                         MemberContextHolder.MemberContext(
-                            memberId = memberId.toInt()
+                            memberId = memberId.toLong()
                         )
                     )
 

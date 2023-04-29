@@ -2,6 +2,7 @@ package core.meeting.usecase
 
 import core.meeting.model.Category
 import core.meeting.model.Meeting
+import core.meeting.model.MeetingCategory
 import core.meeting.model.MeetingSchedule
 import core.meeting.service.MeetingService
 import core.meeting.usecase.result.MeetingOutput
@@ -16,7 +17,7 @@ class CreateMeeting(
     private val txPort: TransactionPort
 ) {
 
-    suspend operator fun invoke(input: Input, currentMemberId: Int): MeetingOutput {
+    suspend operator fun invoke(input: Input, currentMemberId: Long): MeetingOutput {
         return txPort.withNewTransaction {
             val currentMember = memberService.getMemberById(currentMemberId)
 
@@ -45,7 +46,7 @@ class CreateMeeting(
             val maxMember: Int
         )
 
-        fun toDomain(createMemberId: Int): Meeting {
+        fun toDomain(createMemberId: Long): Meeting {
             return Meeting(
                 name = name,
                 introduction = introduction,
@@ -53,7 +54,7 @@ class CreateMeeting(
                 space = Meeting.Space(
                     location = location,
                     type = spaceType,
-                    images = spaceImages
+                    images = spaceImages.map { Meeting.Space.MeetingImage(image = it) }
                 ),
                 description = description,
                 meetingSchedules = meetingSchedules.map {
@@ -63,7 +64,7 @@ class CreateMeeting(
                         maxMember = it.maxMember
                     )
                 },
-                categories = categories,
+                categories = categories.map { MeetingCategory(category = it) },
                 createMemberId = createMemberId
             )
         }

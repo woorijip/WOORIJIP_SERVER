@@ -6,7 +6,7 @@ import core.member.model.Member
 interface CommandMemberPort {
     suspend fun saveMember(member: Member): Member
     suspend fun saveAllInterestCategories(
-        memberId: Int,
+        memberId: Long,
         interestCategories: List<InterestCategory>
     ): List<InterestCategory>
 }

@@ -4,7 +4,7 @@ import core.meeting.model.Category
 import core.member.model.Member
 
 data class MemberOutput(
-    val id: Int,
+    val id: Long,
     val name: String,
     val email: String,
     val phoneNumber: String,

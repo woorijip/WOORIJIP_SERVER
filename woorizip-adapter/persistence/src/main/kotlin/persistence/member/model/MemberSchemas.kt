@@ -5,11 +5,10 @@ import core.member.model.Email
 import core.member.model.InterestCategory
 import core.member.model.Member
 import core.member.model.Password
-import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.Table
+import persistence.common.BaseTable
 
-object MemberTable : IntIdTable("tbl_member") {
+object MemberTable : BaseTable("tbl_member") {
     val name = varchar("name", length = Member.NAME_MAX_LENGTH)
     val email = varchar("email", length = Email.EMAIL_MAX_LENGTH).uniqueIndex("UK_Member_Email")
     val password = char("password", length = Password.ENCODED_PASSWORD_LENGTH)
@@ -33,16 +32,15 @@ internal fun MemberTable.toDomain(row: ResultRow?): Member? {
     }
 }
 
-object InterestCategoryTable : Table("tbl_interest_category") {
+object InterestCategoryTable : BaseTable("tbl_interest_category") {
     val categoryName = enumerationByName<Category>("category_name", length = 20)
     val memberId = reference("member_id", MemberTable)
-
-    override val primaryKey = PrimaryKey(categoryName, memberId)
 }
 
 internal fun InterestCategoryTable.toDomain(row: ResultRow?): InterestCategory? {
     return row?.let {
         InterestCategory(
+            id = row[this.id].value,
             category = row[this.categoryName],
             memberId = row[this.memberId].value
         )

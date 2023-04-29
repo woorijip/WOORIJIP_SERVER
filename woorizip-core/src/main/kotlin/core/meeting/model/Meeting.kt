@@ -10,15 +10,15 @@ import java.time.LocalTime
 
 @AggregateRoot
 data class Meeting(
-    val id: Int = 0,
+    val id: Long = 0,
     val name: String,
     val introduction: String,
     val thumbnail: String,
     val space: Space,
     val description: String,
     val meetingSchedules: List<MeetingSchedule>,
-    val categories: List<Category>,
-    val createMemberId: Int,
+    val categories: List<MeetingCategory>,
+    val createMemberId: Long,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = createdAt
 ) {
@@ -39,8 +39,13 @@ data class Meeting(
     data class Space(
         val location: String,
         val type: SpaceType,
-        val images: List<String>
+        val images: List<MeetingImage>
     ) {
+
+        data class MeetingImage(
+            val id: Long = 0,
+            val image: String
+        )
 
         enum class SpaceType(val value: String) {
             HOUSE("집"),
@@ -61,9 +66,16 @@ data class Meeting(
 
 @SubDomain
 data class MeetingSchedule(
+    val id: Long = 0,
     val date: LocalDate,
     val time: LocalTime,
     val maxMember: Int
+)
+
+@SubDomain
+data class MeetingCategory(
+    val id: Long = 0,
+    val category: Category
 )
 
 enum class Category(val value: String) {

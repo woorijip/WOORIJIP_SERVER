@@ -23,7 +23,7 @@ class MemberPersistenceAdapter(
         return memberRepository.findBy { MemberTable.email eq email }
     }
 
-    override suspend fun getMemberById(id: Int): Member? {
+    override suspend fun getMemberById(id: Long): Member? {
         return memberRepository.findBy { MemberTable.id eq id }
     }
 
@@ -32,9 +32,9 @@ class MemberPersistenceAdapter(
     }
 
     override suspend fun saveAllInterestCategories(
-        memberId: Int,
+        memberId: Long,
         interestCategories: List<InterestCategory>
     ): List<InterestCategory> {
-        return memberRepository.insertAllInterestCategories(interestCategories)
+        return memberRepository.insertAllInterestCategories(memberId, interestCategories.map { it.category })
     }
 }

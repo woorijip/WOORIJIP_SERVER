@@ -1,5 +1,6 @@
 package persistence.member.repository
 
+import core.meeting.model.Category
 import core.member.model.InterestCategory
 import core.member.model.Member
 import org.jetbrains.exposed.sql.Op
@@ -39,11 +40,14 @@ class MemberRepositoryImpl : MemberRepository {
             .let { MemberTable.toDomain(it)!! }
     }
 
-    override suspend fun insertAllInterestCategories(categories: List<InterestCategory>): List<InterestCategory> {
+    override suspend fun insertAllInterestCategories(
+        memberId: Long,
+        categories: List<Category>
+    ): List<InterestCategory> {
         return InterestCategoryTable
             .batchInsert(categories) { category ->
-                this[InterestCategoryTable.categoryName] = category.category
-                this[InterestCategoryTable.memberId] = category.memberId
+                this[InterestCategoryTable.categoryName] = category
+                this[InterestCategoryTable.memberId] = memberId
             }
             .map { InterestCategoryTable.toDomain(it)!! }
     }

@@ -9,7 +9,7 @@ import org.mindrot.jbcrypt.BCrypt
 
 @AggregateRoot
 data class Member(
-    val id: Int = 0,
+    val id: Long = 0,
     val name: String,
     val email: Email,
     val password: Password,
@@ -52,8 +52,9 @@ data class Member(
 
 @SubDomain
 data class InterestCategory(
+    val id: Long = 0,
     val category: Category,
-    val memberId: Int
+    val memberId: Long
 )
 
 @JvmInline

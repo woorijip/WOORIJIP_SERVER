@@ -8,7 +8,7 @@ import core.member.spi.CommandMemberPort
 interface CommandMemberService {
     suspend fun saveMember(member: Member): Member
     suspend fun saveInterestCategories(
-        memberId: Int,
+        memberId: Long,
         categories: List<Category>
     ): List<InterestCategory>
 }
@@ -21,10 +21,10 @@ class CommandMemberServiceImpl(
     }
 
     override suspend fun saveInterestCategories(
-        memberId: Int,
+        memberId: Long,
         categories: List<Category>
     ): List<InterestCategory> {
-        val interestCategoryModels = categories.map { InterestCategory(it, memberId) }
+        val interestCategoryModels = categories.map { InterestCategory(category = it, memberId = memberId) }
         return commandMemberPort.saveAllInterestCategories(memberId, interestCategoryModels)
     }
 }

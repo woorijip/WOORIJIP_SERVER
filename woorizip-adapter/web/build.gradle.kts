@@ -9,6 +9,7 @@ dependencies {
     // modules
     implementation(projects.woorizipCommon)
     implementation(projects.woorizipCore)
+    implementation(projects.woorizipAdapter.persistence)
 
     // cors
     implementation("io.ktor:ktor-server-cors-jvm:$ktor_version")

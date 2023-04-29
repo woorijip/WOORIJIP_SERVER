@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 data class MeetingOutput(
-    val id: Int,
+    val id: Long,
     val name: String,
     val introduction: String,
     val thumbnail: String,
@@ -18,7 +18,7 @@ data class MeetingOutput(
     val description: String,
     val schedules: List<ScheduleOutput>,
     val categories: List<Category>,
-    val createMemberId: Int,
+    val createMemberId: Long,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 ) {
@@ -44,10 +44,10 @@ data class MeetingOutput(
             thumbnail = meeting.thumbnail,
             location = meeting.space.location,
             type = meeting.space.type.value,
-            images = meeting.space.images,
+            images = meeting.space.images.map { it.image },
             description = meeting.description,
             schedules = meeting.meetingSchedules.map { ScheduleOutput.of(it) },
-            categories = meeting.categories,
+            categories = meeting.categories.map { it.category },
             createMemberId = meeting.createMemberId,
             createdAt = meeting.createdAt,
             updatedAt = meeting.updatedAt
