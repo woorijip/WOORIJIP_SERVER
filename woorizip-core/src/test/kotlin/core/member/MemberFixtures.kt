@@ -7,7 +7,7 @@ import core.member.model.Member
 import core.member.model.Password
 
 internal fun createMember(
-    id: Int = 1,
+    id: Long = 1,
     name: String = "김범진",
     email: Email = Email("test@test.com"),
     password: Password = Password("test1234"),
@@ -28,7 +28,7 @@ internal fun createMember(
 
 internal fun createInterestCategory(
     category: Category = Category.FOOD,
-    memberId: Int = 1
+    memberId: Long = 1
 ): InterestCategory = InterestCategory(
     category = category,
     memberId = memberId

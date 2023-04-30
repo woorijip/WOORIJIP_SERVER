@@ -15,7 +15,7 @@ class QueryMeetingServiceTest : DescribeSpec({
     val queryMeetingService = QueryMeetingServiceImpl(queryMeetingPort)
 
     describe("getMeetingById를 호출했을 때") {
-        val meetingId = 1
+        val meetingId = 1L
         val meeting = createMeeting(id = meetingId)
 
         context("모임이 존재한다면") {

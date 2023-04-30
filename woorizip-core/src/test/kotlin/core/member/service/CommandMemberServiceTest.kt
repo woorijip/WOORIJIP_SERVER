@@ -27,7 +27,7 @@ class CommandMemberServiceTest : DescribeSpec({
     }
 
     describe("saveInterestCategories를 호출했을 때") {
-        val memberId = 1
+        val memberId = 1L
         val categories = listOf(Category.ALCOHOL, Category.HEALTH, Category.PET)
         val interestCategories = categories.map { createInterestCategory(memberId = memberId, category = it) }
 

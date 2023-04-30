@@ -16,7 +16,7 @@ internal class QueryMemberServiceTest : DescribeSpec({
     val queryMemberService = QueryMemberServiceImpl(queryMemberPort)
 
     describe("getMemberById를 호출했을 때") {
-        val memberId = 1
+        val memberId = 1L
         val member = createMember(id = memberId)
 
         context("회원이 존재한다면") {
