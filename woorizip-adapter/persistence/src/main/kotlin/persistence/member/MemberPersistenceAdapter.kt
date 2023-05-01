@@ -27,11 +27,11 @@ class MemberPersistenceAdapter(
         return memberRepository.findBy { MemberTable.id eq id }
     }
 
-    override suspend fun saveMember(member: Member): Member {
+    override suspend fun createMember(member: Member): Member {
         return memberRepository.insertMember(member)
     }
 
-    override suspend fun saveAllInterestCategories(
+    override suspend fun createAllInterestCategories(
         memberId: Long,
         interestCategories: List<InterestCategory>
     ): List<InterestCategory> {

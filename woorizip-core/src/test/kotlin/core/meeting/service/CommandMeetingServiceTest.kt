@@ -12,15 +12,15 @@ class CommandMeetingServiceTest : DescribeSpec({
 
     val commandMeetingService = CommandMeetingServiceImpl(commandMeetingPort)
 
-    describe("saveMeeting를 호출했을 때") {
-        val savedMeeting = createMeeting()
+    describe("createMeeting을 호출했을 때") {
+        val createdMeeting = createMeeting()
 
-        coEvery { commandMeetingPort.saveMeeting(any()) } returns savedMeeting
+        coEvery { commandMeetingPort.createMeeting(any()) } returns createdMeeting
 
         it("저장된 Meeting 객체를 반환한다.") {
-            val result = commandMeetingService.saveMeeting(savedMeeting)
+            val result = commandMeetingService.createMeeting(createdMeeting)
 
-            savedMeeting shouldBe result
+            result shouldBe createdMeeting
         }
     }
 })
