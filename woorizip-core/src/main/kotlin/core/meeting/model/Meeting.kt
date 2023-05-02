@@ -4,6 +4,7 @@ import common.exception.BaseException
 import core.annotation.AggregateRoot
 import core.annotation.SubDomain
 import core.meeting.exception.OutOfLengthLimitException
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -70,13 +71,31 @@ data class MeetingSchedule(
     val date: LocalDate,
     val time: LocalTime,
     val maxMember: Int
-)
+) {
+    val weekType: WeekType
+        get() = when (date.dayOfWeek) {
+            DayOfWeek.SATURDAY, DayOfWeek.SUNDAY -> WeekType.WEEKEND
+            else -> WeekType.WEEKDAY
+        }
+}
 
 @SubDomain
 data class MeetingCategory(
     val id: Long = 0,
     val category: Category
 )
+
+enum class WeekType {
+    ALL, WEEKDAY, WEEKEND
+}
+
+fun List<WeekType>.containsType(reqType: WeekType): Boolean {
+    return if (reqType == WeekType.ALL) {
+        true
+    } else {
+        this.contains(reqType)
+    }
+}
 
 enum class Category(val value: String) {
     HUMAN_RELATIONSHIP("인간관계(친목)"),
