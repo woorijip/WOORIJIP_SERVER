@@ -39,18 +39,23 @@ class MeetingRepositoryImpl : MeetingRepository {
             meetingIds.add(it[MeetingTable.id].value)
         }
 
-        val meetingImages = MeetingImageTable.select { MeetingImageTable.meetingId inList meetingIds }.toList()
-        val meetingSchedules = MeetingScheduleTable.select { MeetingScheduleTable.meetingId inList meetingIds }.toList()
+        val meetingImages = MeetingImageTable
+            .select { MeetingImageTable.meetingId inList meetingIds }
+            .groupBy { it[MeetingImageTable.meetingId].value }
+        val meetingSchedules = MeetingScheduleTable
+            .select { MeetingScheduleTable.meetingId inList meetingIds }
+            .groupBy { it[MeetingScheduleTable.meetingId].value }
         val meetingCategories = MeetingCategoryTable
-            .select { MeetingCategoryTable.meetingId inList meetingIds }.toList()
+            .select { MeetingCategoryTable.meetingId inList meetingIds }
+            .groupBy { it[MeetingCategoryTable.meetingId].value }
 
         return meetings.map { meeting ->
-            val meetingId = meeting[MeetingTable.id]
+            val meetingId = meeting[MeetingTable.id].value
             MeetingTable.toDomainNotNull(
                 meetingRow = meeting,
-                imageRow = meetingImages.filter { it[MeetingImageTable.meetingId] == meetingId },
-                scheduleRow = meetingSchedules.filter { it[MeetingScheduleTable.meetingId] == meetingId },
-                categoryRow = meetingCategories.filter { it[MeetingCategoryTable.meetingId] == meetingId }
+                imageRow = meetingImages[meetingId] ?: emptyList(),
+                scheduleRow = meetingSchedules[meetingId] ?: emptyList(),
+                categoryRow = meetingCategories[meetingId] ?: emptyList()
             )
         }
     }
