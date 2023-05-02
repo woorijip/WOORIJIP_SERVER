@@ -22,7 +22,7 @@ class MeetingPersistenceAdapter(
     }
 
     override suspend fun getMeetings(categories: List<Category>, weekType: WeekType, name: String): List<Meeting> {
-        return meetingRepository.findAllMeetings(categories) { MeetingTable.name like "%${name}%" }
+        return meetingRepository.findAllMeetings(categories) { MeetingTable.name like "%$name%" }
             .filter { meeting -> meeting.meetingSchedules.map { it.weekType }.containsType(weekType) }
     }
 }

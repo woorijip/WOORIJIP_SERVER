@@ -2,7 +2,6 @@ package persistence.meeting.repository
 
 import core.meeting.model.Category
 import core.meeting.model.Meeting
-import core.meeting.model.WeekType
 import org.jetbrains.exposed.sql.Op
 
 interface MeetingRepository {
