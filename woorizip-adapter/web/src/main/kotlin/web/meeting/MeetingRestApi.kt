@@ -45,10 +45,8 @@ class MeetingRestApi(
                     town = town
                 )
 
-                val currentMemberId = MemberContextHolder.getContext().getMemberId()
-
                 call.respond(
-                    message = getMeetings(input, currentMemberId),
+                    message = getMeetings(input),
                     status = HttpStatusCode.OK
                 )
             }
