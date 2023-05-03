@@ -14,16 +14,21 @@ class SignIn(
 ) {
 
     suspend operator fun invoke(input: Input): TokenOutput {
+        val email = Email(input.email)
+        val password = Password(input.password)
+
         return txPort.withNewTransaction {
-            val member = memberService.getMemberByEmail(input.email)
-            memberService.signIn(member, input.password)
+            val member = memberService.getMemberByEmail(email)
+                .apply {
+                    checkIsSamePassword(password)
+                }
 
             return@withNewTransaction tokenPort.issueToken(member.id)
         }
     }
 
     data class Input(
-        val email: Email,
-        val password: Password
+        val email: String,
+        val password: String
     )
 }
