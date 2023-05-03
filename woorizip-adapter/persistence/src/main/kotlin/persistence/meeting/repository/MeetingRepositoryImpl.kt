@@ -1,7 +1,9 @@
 package persistence.meeting.repository
 
+import core.meeting.model.Category
 import core.meeting.model.Meeting
 import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -14,25 +16,46 @@ import persistence.meeting.model.toDomain
 import persistence.meeting.model.toDomainNotNull
 
 class MeetingRepositoryImpl : MeetingRepository {
-    override suspend fun findAllMeetings(where: () -> Op<Boolean>): List<Meeting> {
-        val meetings = MeetingTable.select(where()).toList()
+    override suspend fun findAllMeetings(
+        categories: List<Category>,
+        where: () -> Op<Boolean>
+    ): List<Meeting> {
+        val meetings = if (categories.isNotEmpty()) {
+            MeetingTable
+                .innerJoin(MeetingCategoryTable)
+                .slice(MeetingTable.fields)
+                .select(where())
+                .andWhere {
+                    MeetingCategoryTable.categoryName inList categories
+                }
+                .groupBy(MeetingTable.id)
+                .toList()
+        } else {
+            MeetingTable.select(where()).toList()
+        }
 
         val meetingIds = mutableListOf<Long>()
         meetings.forEach {
             meetingIds.add(it[MeetingTable.id].value)
         }
 
-        val images = MeetingImageTable.select { MeetingImageTable.meetingId inList meetingIds }.toList()
-        val schedules = MeetingScheduleTable.select { MeetingScheduleTable.meetingId inList meetingIds }.toList()
-        val categories = MeetingCategoryTable.select { MeetingCategoryTable.meetingId inList meetingIds }.toList()
+        val meetingImages = MeetingImageTable
+            .select { MeetingImageTable.meetingId inList meetingIds }
+            .groupBy { it[MeetingImageTable.meetingId].value }
+        val meetingSchedules = MeetingScheduleTable
+            .select { MeetingScheduleTable.meetingId inList meetingIds }
+            .groupBy { it[MeetingScheduleTable.meetingId].value }
+        val meetingCategories = MeetingCategoryTable
+            .select { MeetingCategoryTable.meetingId inList meetingIds }
+            .groupBy { it[MeetingCategoryTable.meetingId].value }
 
         return meetings.map { meeting ->
-            val meetingId = meeting[MeetingTable.id]
+            val meetingId = meeting[MeetingTable.id].value
             MeetingTable.toDomainNotNull(
                 meetingRow = meeting,
-                imageRow = images.filter { it[MeetingImageTable.meetingId] == meetingId },
-                scheduleRow = schedules.filter { it[MeetingScheduleTable.meetingId] == meetingId },
-                categoryRow = categories.filter { it[MeetingCategoryTable.meetingId] == meetingId }
+                imageRow = meetingImages[meetingId] ?: emptyList(),
+                scheduleRow = meetingSchedules[meetingId] ?: emptyList(),
+                categoryRow = meetingCategories[meetingId] ?: emptyList()
             )
         }
     }

@@ -21,7 +21,7 @@ class CreateMeeting(
         return txPort.withNewTransaction {
             val currentMember = memberService.getMemberById(currentMemberId)
 
-            val savedMeeting = meetingService.create(
+            val savedMeeting = meetingService.createMeeting(
                 input.toDomain(currentMember.id)
             )
 

@@ -15,17 +15,17 @@ class SignUp(
 
     suspend operator fun invoke(input: Input): MemberOutput {
         return txPort.withNewTransaction {
-            val savedMember = memberService.signUp(
+            val createdMember = memberService.createMember(
                 input.toDomain()
             )
 
             input.interestCategories?.let {
-                memberService.saveInterestCategories(savedMember.id, it)
+                memberService.createInterestCategories(createdMember.id, it)
 
-                return@withNewTransaction MemberOutput.of(savedMember, it)
+                return@withNewTransaction MemberOutput.of(createdMember, it)
             }
 
-            return@withNewTransaction MemberOutput.of(savedMember)
+            return@withNewTransaction MemberOutput.of(createdMember)
         }
     }
 
