@@ -62,7 +62,7 @@ class MeetingRepositoryImpl : MeetingRepository {
 
     override suspend fun findMeetingById(meetingId: Long): Meeting? {
         return MeetingTable.toDomain(
-            meetingRow = MeetingTable.select { MeetingTable.id eq meetingId }.single(),
+            meetingRow = MeetingTable.select { MeetingTable.id eq meetingId }.singleOrNull(),
             imageRow = MeetingImageTable.select { MeetingImageTable.meetingId eq meetingId }.toResultRow(),
             scheduleRow = MeetingScheduleTable.select { MeetingScheduleTable.meetingId eq meetingId }.toResultRow(),
             categoryRow = MeetingCategoryTable.select { MeetingCategoryTable.meetingId eq meetingId }.toResultRow()

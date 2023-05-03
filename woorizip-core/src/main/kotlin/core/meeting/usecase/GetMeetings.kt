@@ -14,9 +14,7 @@ class GetMeetings(
         return txPort.withNewTransaction {
             val meetings = meetingService.getMeetings(input.categories, input.weekType, input.name)
 
-            return@withNewTransaction meetings.map {
-                MeetingOutput.of(it).withMeetingCount(it.meetingCount)
-            }
+            return@withNewTransaction meetings.map(MeetingOutput::of)
         }
     }
 

@@ -18,10 +18,11 @@ data class MeetingOutput(
     val description: String,
     val schedules: List<ScheduleOutput>,
     val categories: List<Category>,
-    val meetingCount: Int? = null,
+    val meetingCount: Int,
     val createMemberId: Long,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
+    val reviews: List<ReviewOutput> = emptyList()
 ) {
     data class ScheduleOutput(
         val date: LocalDate,
@@ -33,6 +34,20 @@ data class MeetingOutput(
                 date = meetingSchedule.date,
                 time = meetingSchedule.time,
                 maxMember = meetingSchedule.maxMember
+            )
+        }
+    }
+
+    data class ReviewOutput(
+        val name: String,
+        val date: LocalDate,
+        val content: String
+    ) {
+        companion object {
+            fun of() = ReviewOutput( // TODO 매개변수 추가
+                name = "",
+                date = LocalDate.now(),
+                content = ""
             )
         }
     }
@@ -49,11 +64,12 @@ data class MeetingOutput(
             description = meeting.description,
             schedules = meeting.meetingSchedules.map { ScheduleOutput.of(it) },
             categories = meeting.categories.map { it.category },
+            meetingCount = meeting.meetingCount,
             createMemberId = meeting.createMemberId,
             createdAt = meeting.createdAt,
-            updatedAt = meeting.updatedAt,
+            updatedAt = meeting.updatedAt
         )
     }
 
-    fun withMeetingCount(meetingCount: Int) = this.copy(meetingCount = meetingCount)
+    fun withReviews() = this.copy(reviews = reviews) // TODO 매개변수 추가
 }

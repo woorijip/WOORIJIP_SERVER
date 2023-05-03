@@ -6,6 +6,7 @@ import core.meeting.service.MeetingService
 import core.meeting.service.QueryMeetingService
 import core.meeting.service.QueryMeetingServiceImpl
 import core.meeting.usecase.CreateMeeting
+import core.meeting.usecase.GetMeetingDetails
 import core.meeting.usecase.GetMeetings
 import core.member.service.CheckMemberService
 import core.member.service.CheckMemberServiceImpl
@@ -47,4 +48,5 @@ internal val useCaseModule = module {
     // meeting
     singleOf(::CreateMeeting)
     singleOf(::GetMeetings)
+    singleOf(::GetMeetingDetails)
 }
