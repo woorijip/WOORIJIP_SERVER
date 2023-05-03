@@ -3,8 +3,10 @@ package persistence.meeting.repository
 import core.meeting.model.Category
 import core.meeting.model.Meeting
 import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.batchInsert
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import persistence.common.toResultRow
@@ -93,6 +95,7 @@ class MeetingRepositoryImpl : MeetingRepository {
             it[location] = meeting.space.location
             it[spaceType] = meeting.space.type
             it[description] = meeting.description
+            it[meetingCount] = meeting.meetingCount
             it[createMemberId] = meeting.createMemberId
             it[createdAt] = meeting.createdAt
             it[updatedAt] = meeting.updatedAt
@@ -124,5 +127,12 @@ class MeetingRepositoryImpl : MeetingRepository {
             scheduleRow = scheduleResult,
             categoryRow = categoryResult
         )
+    }
+
+    override suspend fun deleteMeeting(meeting: Meeting) {
+        MeetingImageTable.deleteWhere { meetingId eq meeting.id }
+        MeetingScheduleTable.deleteWhere { meetingId eq meeting.id }
+        MeetingCategoryTable.deleteWhere { meetingId eq meeting.id }
+        MeetingTable.deleteWhere { MeetingTable.id eq meeting.id }
     }
 }

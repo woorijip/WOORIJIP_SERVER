@@ -33,6 +33,6 @@ sealed class BaseException(
 
     open class UnhandledException(
         override val code: String = BaseErrorCode.UNHANDLED_EXCEPTION.code,
-        override val message: String,
+        override val message: String = BaseErrorCode.UNHANDLED_EXCEPTION.message
     ) : BaseException(code, message)
 }

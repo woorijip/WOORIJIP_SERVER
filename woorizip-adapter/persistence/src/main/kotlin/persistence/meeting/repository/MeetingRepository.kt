@@ -14,4 +14,5 @@ interface MeetingRepository {
     suspend fun findMeetingBy(where: () -> Op<Boolean>): Meeting?
     suspend fun existsMeetingBy(where: () -> Op<Boolean>): Boolean
     suspend fun insertMeeting(meeting: Meeting): Meeting
+    suspend fun deleteMeeting(meeting: Meeting)
 }
