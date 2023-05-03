@@ -36,13 +36,11 @@ class MeetingRestApi(
                 val categories = call.request.queryParameters.getAll("categories")
                 val weekType = call.request.queryParameters["weekType"]
                 val name = call.request.queryParameters["name"]
-                val town = call.request.queryParameters["town"]
 
                 val input = GetMeetings.Input(
                     categories = categories?.map { Category.valueOf(it) },
                     weekType = weekType?.let { WeekType.valueOf(it) },
-                    name = name,
-                    town = town
+                    name = name
                 )
 
                 call.respond(

@@ -18,6 +18,7 @@ data class MeetingOutput(
     val description: String,
     val schedules: List<ScheduleOutput>,
     val categories: List<Category>,
+    val meetingCount: Int? = null,
     val createMemberId: Long,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
@@ -50,7 +51,9 @@ data class MeetingOutput(
             categories = meeting.categories.map { it.category },
             createMemberId = meeting.createMemberId,
             createdAt = meeting.createdAt,
-            updatedAt = meeting.updatedAt
+            updatedAt = meeting.updatedAt,
         )
     }
+
+    fun withMeetingCount(meetingCount: Int) = this.copy(meetingCount = meetingCount)
 }

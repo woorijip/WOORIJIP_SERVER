@@ -17,6 +17,7 @@ object MeetingTable : BaseTable("tbl_meeting") {
     val location = text("location")
     val spaceType = enumerationByName<Meeting.Space.SpaceType>("space_type", length = 15)
     val description = varchar("description", length = 255)
+    val meetingCount = integer("meeting_count")
     val createMemberId = reference("create_member_id", MemberTable.id)
 }
 
@@ -89,6 +90,7 @@ internal fun MeetingTable.toDomainNotNull(
                 category = category[MeetingCategoryTable.categoryName]
             )
         },
+        meetingCount = meetingRow[this.meetingCount],
         createMemberId = meetingRow[this.createMemberId].value,
         createdAt = meetingRow[this.createdAt],
         updatedAt = meetingRow[this.updatedAt]

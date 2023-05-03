@@ -19,6 +19,7 @@ data class Meeting(
     val description: String,
     val meetingSchedules: List<MeetingSchedule>,
     val categories: List<MeetingCategory>,
+    val meetingCount: Int = 0,
     val createMemberId: Long,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = createdAt

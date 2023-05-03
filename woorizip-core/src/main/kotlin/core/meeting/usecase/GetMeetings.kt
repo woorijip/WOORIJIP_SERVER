@@ -14,22 +14,21 @@ class GetMeetings(
         return txPort.withNewTransaction {
             val meetings = meetingService.getMeetings(input.categories, input.weekType, input.name)
 
-            return@withNewTransaction meetings.map(MeetingOutput::of)
+            return@withNewTransaction meetings.map {
+                MeetingOutput.of(it).withMeetingCount(it.meetingCount)
+            }
         }
     }
 
     class Input(
         categories: List<Category>?,
         weekType: WeekType?,
-        name: String?,
-        town: String?
+        name: String?
     ) {
         val categories: List<Category> = categories ?: emptyList()
 
         val weekType: WeekType = weekType ?: WeekType.ALL
 
         val name: String = name ?: ""
-
-        val town: String? = town
     }
 }
