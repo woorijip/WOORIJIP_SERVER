@@ -3,6 +3,7 @@ package web.meeting
 import core.meeting.model.Category
 import core.meeting.model.WeekType
 import core.meeting.usecase.CreateMeeting
+import core.meeting.usecase.GetMeetingDetails
 import core.meeting.usecase.GetMeetings
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
@@ -17,7 +18,8 @@ import web.context.MemberContextHolder
 
 class MeetingRestApi(
     private val createMeeting: CreateMeeting,
-    private val getMeetings: GetMeetings
+    private val getMeetings: GetMeetings,
+    private val getMeetingDetails: GetMeetingDetails
 ) : Api({
     route("/meetings") {
         authenticate {
@@ -45,6 +47,15 @@ class MeetingRestApi(
 
                 call.respond(
                     message = getMeetings(input),
+                    status = HttpStatusCode.OK
+                )
+            }
+
+            get("/{meetingId}") {
+                val meetingId = call.parameters["meetingId"]?.toLong() ?: 0
+
+                call.respond(
+                    message = getMeetingDetails(meetingId),
                     status = HttpStatusCode.OK
                 )
             }
