@@ -17,6 +17,10 @@ class MeetingPersistenceAdapter(
         return meetingRepository.insertMeeting(meeting)
     }
 
+    override suspend fun removeMeeting(meeting: Meeting) {
+        meetingRepository.deleteMeeting(meeting)
+    }
+
     override suspend fun getMeetingById(id: Long): Meeting? {
         return meetingRepository.findMeetingById(id)
     }

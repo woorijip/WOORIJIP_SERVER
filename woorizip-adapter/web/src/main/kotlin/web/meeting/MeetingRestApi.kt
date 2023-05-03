@@ -5,21 +5,25 @@ import core.meeting.model.WeekType
 import core.meeting.usecase.CreateMeeting
 import core.meeting.usecase.GetMeetingDetails
 import core.meeting.usecase.GetMeetings
+import core.meeting.usecase.RemoveMeeting
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import web.Api
 import web.context.MemberContextHolder
+import web.exception.InvalidPathParamException
 
 class MeetingRestApi(
     private val createMeeting: CreateMeeting,
     private val getMeetings: GetMeetings,
-    private val getMeetingDetails: GetMeetingDetails
+    private val getMeetingDetails: GetMeetingDetails,
+    private val removeMeeting: RemoveMeeting
 ) : Api({
     route("/meetings") {
         authenticate {
@@ -52,11 +56,20 @@ class MeetingRestApi(
             }
 
             get("/{meetingId}") {
-                val meetingId = call.parameters["meetingId"]?.toLong() ?: 0
+                val meetingId = call.parameters["meetingId"]?.toLong() ?: throw InvalidPathParamException()
 
                 call.respond(
                     message = getMeetingDetails(meetingId),
                     status = HttpStatusCode.OK
+                )
+            }
+
+            delete("/{meetingId}") {
+                val meetingId = call.parameters["meetingId"]?.toLong() ?: throw InvalidPathParamException()
+
+                call.respond(
+                    message = removeMeeting(meetingId),
+                    status = HttpStatusCode.NoContent
                 )
             }
         }
