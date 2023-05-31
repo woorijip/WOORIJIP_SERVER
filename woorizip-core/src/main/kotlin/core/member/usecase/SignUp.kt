@@ -31,20 +31,20 @@ class SignUp(
 
     data class Input(
         val name: String,
-        val email: Email,
+        val email: String, // TODO value class로 변경
         val phoneNumber: String,
         val age: Int,
-        val password: Password,
+        val password: String, // TODO value class로 변경
         val selfIntroduce: String? = null,
         val interestCategories: List<Category>? = null
     ) {
         fun toDomain(): Member {
             return Member(
                 name = name,
-                email = email,
+                email = Email(email),
                 phoneNumber = phoneNumber,
                 age = age,
-                password = password,
+                password = Password(password),
                 selfIntroduce = selfIntroduce
             )
         }

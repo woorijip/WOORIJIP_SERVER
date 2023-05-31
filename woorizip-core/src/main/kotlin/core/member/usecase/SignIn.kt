@@ -28,7 +28,7 @@ class SignIn(
     }
 
     data class Input(
-        val email: String,
-        val password: String
+        val email: String, // TODO value class로 변경
+        val password: String // TODO value class로 변경
     )
 }

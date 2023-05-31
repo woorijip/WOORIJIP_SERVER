@@ -22,7 +22,7 @@ private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
 
 fun Application.serialization() {
     install(ContentNegotiation) {
-        jackson {
+        jackson { // TODO Kotlinx Serialization으로 변경
             enable(SerializationFeature.INDENT_OUTPUT)
             registerModules(
                 kotlinModule(),
